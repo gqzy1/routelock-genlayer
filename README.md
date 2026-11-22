@@ -2,6 +2,8 @@
 
 [Open RouteLock](https://gqzy1.github.io/routelock-genlayer/)
 
+[Studionet contract](https://explorer-studio.genlayer.com/address/0xCF045D20fD5373276A8D8Fb14298661070b453E9) · [Acceptance evidence](evidence/routes.json)
+
 RouteLock is a stablecoin deposit preflight desk. A sender checks a specific asset, network and destination policy. GenLayer records the agreed assessment, and a separate reviewer can use an unexpired permit once to credit a demo payout ledger.
 
 | Route | Asset evidence | Deposit policy |
@@ -21,7 +23,9 @@ npm run deploy -- --schema
 
 Requires Node.js 22.13+ and Python 3. `npm run deploy -- --schema` asks the official Stable Studionet RPC to compile the canonical source and return its schema without deploying or signing. The static site uses relative asset URLs and supports GitHub Pages repository paths. The Pages workflow expects GitHub Actions as the repository's Pages source.
 
-**Practice** shows labeled example decisions. **Studionet** expects the address of a deployment of `contracts/routelock.py`. Deploy that source using GenLayer Studio on Stable Studionet, then pass its deployment transaction hash to `npm run deploy -- <hash>` to verify source, execution and protocol and record the deployment. The deploy script also supports explicitly supplying a disposable Studionet signing key through the shell environment when a CLI deployment is needed.
+**Practice** shows six labeled examples. Select a scenario to replay the route and use the timeline to revisit its phases. **Studionet** defaults to the deployment in `deployment.json`. Select a verified intent to read its finalized state without a wallet and open its transaction receipts. Use a connected wallet to assess a new intent.
+
+For a separate deployment, deploy `contracts/routelock.py` in GenLayer Studio on Stable Studionet. Pass its transaction hash to `npm run deploy -- <hash>` in a checkout without a deployment manifest to verify the source, execution and protocol. The deploy script also supports supplying a disposable Studionet signing key through the shell environment.
 
 ## Complete a signed preflight
 
@@ -37,6 +41,10 @@ Requires Node.js 22.13+ and Python 3. `npm run deploy -- --schema` asks the offi
 
 `consume` is available to the named reviewer, checks the original digest and expiry, and credits the demo ledger once. Its arguments cannot replace the recipient, token or amount. `read_intent` and `demo_received` expose finalized state for other clients.
 
-This application evaluates public deposit policy at assessment time. Account-specific eligibility, address ownership and changes after observation remain outside its scope. The contract moves no USDC and connects to no exchange account. The local tests cover the state machine and receipt matching with fixtures. Live deployment, consensus and wallet evidence require a signed Studionet run.
+This application evaluates public deposit policy at assessment time. Account-specific eligibility, address ownership and changes after observation remain outside its scope. The contract moves no USDC and connects to no exchange account. The local tests cover the state machine and receipt matching with fixtures.
+
+## Verified Studionet cases
+
+The evidence file preserves the deployment, a native assessment that issued a READY permit, a separate reviewer's consumption that increased the test ledger by 250,000,000 units, and a bridged assessment that returned BLOCKED with no permit and zero balance. All four transactions reached FINALIZED with successful leader execution. The bridged receipt includes an idle validator entry, which is retained separately from the successful leader record. The two write roles in this run used disposable SDK signers. The live web views read the same deployments and intents.
 
 MIT licensed.

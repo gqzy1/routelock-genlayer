@@ -1,5 +1,7 @@
 import './style.css';
+import { getAddress } from 'viem';
 import { CHAIN, RPC, explorer, finalized, read, signer, verifyDeployment } from './chain.js';
+import { practiceCases, phases } from './cases.js';
 import { verifyCall } from './receipts.js';
 import { KRAKEN, isAddress, isKey, routes, toUnits } from './routes.js';
 
@@ -15,6 +17,13 @@ let record;
 let busy = false;
 let pending = readPending();
 let stepCount = 1;
+let viewedPhase = 0;
+let selectedCase = practiceCases[0];
+let animation;
+let animating = false;
+let renderedCaseMode;
+const release = Object.values(import.meta.glob('../deployment.json', { eager: true, import: 'default' }))[0];
+const liveEvidence = Object.values(import.meta.glob('../evidence/routes.json', { eager: true, import: 'default' }))[0];
 const discovered = new Map();
 
 function readPending() {
@@ -30,8 +39,66 @@ function savePending(value) {
 function say(message, steps = stepCount) {
   $('status').textContent = message;
   stepCount = steps;
-  [...$('steps').children].forEach((node, index) => node.classList.toggle('done', index < stepCount));
+  showPhase(Math.max(0, stepCount - 1));
 }
+
+function showPhase(index) {
+  viewedPhase = index;
+  [...$('steps').children].forEach((node, position) => {
+    node.classList.toggle('done', position < stepCount);
+    const control = node.firstElementChild;
+    control.disabled = position >= stepCount;
+    control.setAttribute('aria-current', position === viewedPhase ? 'step' : 'false');
+  });
+  const phase = phases[viewedPhase];
+  const detail = index === 1 && record?.evidence
+    ? record.evidence.policy_quote || 'The policy returned no explicit decision.'
+    : index >= 2 && record
+      ? (mode === 'demo' ? selectedCase?.detail : 'Finalized state: ' + record.status)
+      : phase.detail;
+  $('phase-detail').textContent = phase.name + ' · ' + (detail ?? phase.detail);
+  document.querySelector('.workspace').dataset.phase = String(viewedPhase);
+  $('map').dataset.phase = String(viewedPhase);
+}
+
+function renderCases() {
+  const cards = mode === 'demo' ? practiceCases : liveEvidence?.records ?? [];
+  $('case-heading').textContent = mode === 'demo' ? 'Practice scenarios' : 'Verified Studionet intents';
+  $('case-count').textContent = cards.length ? cards.length + ' CASES' : 'Awaiting live evidence';
+  if (renderedCaseMode !== mode) {
+    renderedCaseMode = mode;
+    $('cases').replaceChildren(...cards.map(item => {
+      const element = button(item.title, () => {
+        if (busy) return;
+        if (mode === 'demo') {
+          stopAnimation();
+          selectedCase = item;
+          route = item.route;
+          stop = 'identity';
+          record = undefined;
+          $('amount').value = item.amount;
+          $('recipient').value = '0x0000000000000000000000000000000000000123';
+          playPractice();
+        } else {
+          $('owner').value = item.owner;
+          $('key').value = item.key;
+          run(lookup);
+        }
+      });
+      element.className = 'case-card';
+      const state = document.createElement('small');
+      state.textContent = item.status.replaceAll('_', ' ');
+      element.append(state);
+      return element;
+    }));
+  }
+  [...$('cases').children].forEach((element, index) => {
+    const item = cards[index];
+    const matched = mode === 'demo' ? item.id === selectedCase?.id : item.key === record?.key && item.owner === record?.owner;
+    element.setAttribute('aria-pressed', matched);
+  });
+}
+
 
 function currentRoute() { return routes[route]; }
 function selectedContract() { return $('contract').value.trim().toLowerCase(); }
@@ -74,6 +141,7 @@ function render() {
     BLOCKED: ['Route blocked', 'The public deposit policy excludes this route.'],
     REVIEW: ['Review needed', 'The sources did not establish a supported route.'],
     CONSUMED: ['Permit consumed', 'The single-use permit has credited the demo ledger.'],
+    EXPIRED: ['Permit expired', 'The time limit has passed. A fresh assessment is required.'],
   };
   const [title, note] = states[record?.status] ?? ['Awaiting route check', 'Check a route to see its decision and evidence.'];
   $('verdict').className = 'verdict ' + (record?.status || 'idle').toLowerCase();
@@ -82,7 +150,7 @@ function render() {
   const heading = document.createElement('strong');
   heading.textContent = title;
   const paragraph = document.createElement('p');
-  paragraph.textContent = note;
+  paragraph.textContent = mode === 'demo' && record?.status === selectedCase?.status ? selectedCase.detail : note;
   $('verdict').replaceChildren(label, heading, paragraph);
   if (record?.expires) {
     const expiry = document.createElement('p');
@@ -92,14 +160,17 @@ function render() {
   $('consume').hidden = record?.status !== 'READY' || (mode === 'live' && account !== record.reviewer);
   $('consume').textContent = mode === 'demo' ? 'Try permit consumption' : 'Consume permit on Studionet';
   $('consume').disabled = busy || (mode === 'live' && Boolean(pending));
-  $('check').disabled = busy || (mode === 'live' && Boolean(pending));
+  $('check').disabled = busy || animating || (mode === 'live' && Boolean(pending));
   $('lookup').disabled = busy;
   $('share').hidden = mode === 'demo' || !record?.owner;
   $('connect').textContent = account ? account.slice(0, 6) + '…' + account.slice(-4) : 'Connect wallet';
+  renderCases();
 }
 
 function selectRoute(next, nextStop = 'identity') {
   if (next !== route) {
+    stopAnimation();
+    selectedCase = practiceCases.find(item => item.route === next);
     record = undefined;
     say('Route changed. Run a new check.', 1);
   }
@@ -110,6 +181,7 @@ function selectRoute(next, nextStop = 'identity') {
 
 function changeMode(next) {
   if (busy || mode === next) return;
+  stopAnimation();
   mode = next;
   record = undefined;
   say(next === 'live' ? 'Enter a verified deployment or open a shared intent.' : 'Explore the practice routes.', 1);
@@ -235,7 +307,7 @@ async function write(task, args) {
   savePending(task);
   try {
     const hash = await signer(provider, task.signer).writeContract({
-      address: task.deployment, functionName: task.action, args, value: 0n, leaderOnly: false,
+      address: getAddress(task.deployment), functionName: task.action, args, value: 0n, leaderOnly: false,
     });
     if (!addressPattern.test(hash)) throw new Error('Wallet did not return a valid transaction hash.');
     recoverableHash = hash;
@@ -247,16 +319,41 @@ async function write(task, args) {
   await resume();
 }
 
+function stopAnimation() {
+  clearTimeout(animation);
+  animating = false;
+  $('map').classList.remove('checking');
+}
+
+function playPractice() {
+  stopAnimation();
+  animating = true;
+  record = undefined;
+  $('map').classList.add('checking');
+  let phase = 0;
+  const delay = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 260;
+  function advance() {
+    if (phase === phases.length - 1) {
+      record = { status: selectedCase?.status ?? currentRoute().practice };
+      stopAnimation();
+      say('Practice complete · sample decision shown.', 4);
+      render();
+      return;
+    }
+    say('Practice · ' + phases[phase].name, phase + 1);
+    phase += 1;
+    animation = setTimeout(advance, delay);
+  }
+  render();
+  advance();
+}
+
 async function check() {
   const amount = toUnits($('amount').value.trim());
   const recipient = $('recipient').value.trim().toLowerCase();
   if (!isAddress(recipient)) throw new Error('Enter a valid test recipient address.');
   const selected = currentRoute();
-  if (mode === 'demo') {
-    record = { status: selected.practice };
-    say('Practice complete · sample decision shown.', 4);
-    return;
-  }
+  if (mode === 'demo') return playPractice();
   const deployment = selectedContract();
   const reviewer = $('reviewer').value.trim().toLowerCase();
   const key = selectedKey();
@@ -294,10 +391,10 @@ function receiptControls() {
   const area = $('receipt-controls');
   area.replaceChildren();
   if (mode !== 'live') return;
-  function addLink(hash) {
+  function addLink(hash, label = 'Explorer') {
     const link = document.createElement('a');
     link.href = explorer + '/transactions/' + hash;
-    link.textContent = 'Explorer ↗';
+    link.textContent = label + ' ↗';
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
     area.append(link);
@@ -329,6 +426,12 @@ function receiptControls() {
       say('No matching finalized change yet. Check wallet activity before submitting again.', 1);
     })));
   } else if (recoverableHash) addLink(recoverableHash);
+  const published = liveEvidence?.records.find(item => item.owner === record?.owner && item.key === record?.key && item.deployment === record?.deployment);
+  if (published) {
+    for (const [label, hash] of Object.entries(published.transactions)) {
+      if (hash !== recoverableHash) addLink(hash, label);
+    }
+  }
 }
 
 async function run(action) {
@@ -358,8 +461,10 @@ $('share').onclick = () => run(async () => {
   await navigator.clipboard.writeText(url);
   say('Read-only intent link copied.');
 });
+[...$('steps').children].forEach((node, index) => node.firstElementChild.onclick = () => showPhase(index));
+if (release) $('contract').value = release.address.toLowerCase();
 for (const id of ['amount', 'recipient', 'contract', 'key', 'owner', 'reviewer']) {
-  $(id).addEventListener('input', () => { record = undefined; render(); });
+  $(id).addEventListener('input', () => { stopAnimation(); record = undefined; say('Intent edited. Run a new check.', 1); render(); });
 }
 window.addEventListener('eip6963:announceProvider', event => {
   const { info, provider: item } = event.detail;
@@ -379,4 +484,5 @@ if (params.has('contract') && params.has('owner') && params.has('key')) {
   say('A submitted intent is awaiting receipt verification.', 2);
 }
 render();
+showPhase(viewedPhase);
 receiptControls();

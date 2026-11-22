@@ -1,3 +1,4 @@
+import { getAddress } from 'viem';
 import { createClient } from 'genlayer-js';
 import { studionet } from 'genlayer-js/chains';
 import { TransactionStatus } from 'genlayer-js/types';
@@ -16,11 +17,11 @@ export function signer(provider, account) {
 }
 
 export function read(address, functionName, args = []) {
-  return readonly.readContract({ address, functionName, args, transactionHashVariant: 'latest-final' });
+  return readonly.readContract({ address: getAddress(address), functionName, args, transactionHashVariant: 'latest-final' });
 }
 
 export async function verifyDeployment(address) {
-  const [code, version] = await Promise.all([readonly.getContractCode(address), read(address, 'protocol')]);
+  const [code, version] = await Promise.all([readonly.getContractCode(getAddress(address)), read(address, 'protocol')]);
   const decoded = /^0x[\da-f]+$/i.test(code)
     ? new TextDecoder().decode(Uint8Array.from(code.slice(2).match(/../g), byte => parseInt(byte, 16)))
     : code;

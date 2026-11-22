@@ -10,7 +10,10 @@ function decodedCall(receipt) {
 
 export function executionStatus(receipt) {
   const leaders = receipt.consensus_data?.leader_receipt;
-  const leader = Array.isArray(leaders) ? leaders.at(-1) : leaders;
+  const leader = Array.isArray(leaders)
+    ? leaders.findLast(entry => entry.mode === 'leader')
+      ?? (leaders.length === 1 && !leaders[0].mode ? leaders[0] : undefined)
+    : leaders?.mode === 'validator' ? undefined : leaders;
   const result = String(leader?.execution_result ?? receipt.txExecutionResultName ?? '').toUpperCase();
   if (['SUCCESS', 'FINISHED_WITH_RETURN'].includes(result) || (!result && receipt.txExecutionResult === 1)) return 'SUCCESS';
   if (['ERROR', 'FAILURE', 'FINISHED_WITH_ERROR'].includes(result) || (!result && receipt.txExecutionResult === 2)) return 'FAILURE';

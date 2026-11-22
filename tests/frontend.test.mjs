@@ -25,3 +25,13 @@ test('a receipt from the same sender is rejected if calldata differs', () => {
   assert.doesNotThrow(() => verifyCall(receipt, task));
   assert.throws(() => verifyCall(receipt, { ...task, permit: 'cd' }), /signed call/);
 });
+
+
+test('validator idleness does not replace the leader execution result', () => {
+  const receipt = { consensus_data: { leader_receipt: [
+    { mode: 'leader', execution_result: 'SUCCESS' },
+    { mode: 'validator', vote: 'idle', execution_result: 'ERROR' },
+  ] } };
+  assert.equal(executionStatus(receipt), 'SUCCESS');
+  assert.equal(executionStatus({ consensus_data: { leader_receipt: [receipt.consensus_data.leader_receipt[1]] } }), 'UNKNOWN');
+});

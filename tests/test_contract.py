@@ -128,3 +128,29 @@ class RouteLockTest(unittest.TestCase):
         self.assertTrue(contract.equivalent(left, right))
         self.assertFalse(contract.equivalent(left, dict(right, policy_revision="changed")))
         self.assertFalse(contract.equivalent(left, dict(right, policy="BLOCK")))
+
+
+    def test_permit_is_bound_to_amount_identifier_and_recipient(self):
+        first = self.assess("one")
+        chain = 42161
+        self.app.assess("two", chain, contract.ROUTES[chain][2],
+                        "0x" + "7" * 40, 312750000, REVIEWER, 30)
+        second = json.loads(self.app.read_intent(OWNER, "two"))
+        self.assertNotEqual(first["permit"], second["permit"])
+        contract.gl.message.sender_address = REVIEWER
+        with self.assertRaisesRegex(UserError, "PERMIT_MISMATCH"):
+            self.app.consume(OWNER, "two", first["permit"])
+
+    def test_review_cannot_be_consumed(self):
+        self.proposed_status = self.reproduced_status = "REVIEW"
+        review = self.assess("withdrawals-only")
+        self.assertEqual((review["status"], review["permit"]), ("REVIEW", ""))
+        contract.gl.message.sender_address = REVIEWER
+        with self.assertRaisesRegex(UserError, "INTENT_NOT_READY"):
+            self.app.consume(OWNER, "withdrawals-only", "")
+        self.assertEqual(self.app.demo_received(RECIPIENT, 42161), 0)
+
+    def test_issuer_requires_the_linked_bridged_contract(self):
+        body = "USDC on Avalanche vs. USDC.e USDC.e is a bridged form of Ethereum USDC"
+        self.assertFalse(contract.issuer_evidence(body, 43114))
+        self.assertTrue(contract.issuer_evidence(body + " " + contract.ROUTES[43114][2], 43114))

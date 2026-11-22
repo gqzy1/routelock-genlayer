@@ -1,0 +1,224 @@
+{
+  "chainId": 61999,
+  "address": "0xCF045D20fD5373276A8D8Fb14298661070b453E9",
+  "deploymentTx": "0x6b861ca12522e9ab769996f242fa37fa360aa56bb4df71b1a40f944f7534570a",
+  "sourceSha256": "c2e582a3306dad05d03c7cf24fbbecf92d39a96ca7e0bd0c66699e48db8d5739",
+  "records": [
+    {
+      "title": "Native · permit consumed",
+      "amount": "250000000",
+      "assessed": 1795372143,
+      "chain": 42161,
+      "consumed": 1795372253,
+      "deployment": "0xcf045d20fd5373276a8d8fb14298661070b453e9",
+      "evidence": {
+        "asset": "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
+        "identity": "MATCH",
+        "issuer_quote": "Arbitrum 0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+        "policy": "ALLOW",
+        "policy_quote": "Both USDC.e and USDC native can be deposited on the Optimism , Polygon and Arbitrum One networks.",
+        "policy_revision": "4e66dd82da0e9291fe97d274b57925974f596463fd0ad6ecbc842d2c9c97e45f",
+        "sources": [
+          "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+          "https://support.kraken.com/au/articles/native-usd-coin"
+        ]
+      },
+      "expires": 1795373943,
+      "key": "arbitrum-native-check",
+      "owner": "0x3862140bae556d621d73d601cbaee2437c4b4f1a",
+      "permit": "cb0543848648d9098da84f08cacfe2c4c1fb47bb76961de0519a85c071526ed8",
+      "platform": "Kraken",
+      "protocol": "routelock/1",
+      "recipient": "0x0000000000000000000000000000000000000123",
+      "reviewer": "0xd9a2a68e2d83c817a102172e9626d4aa1addfd11",
+      "status": "CONSUMED",
+      "token": "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
+      "transactions": {
+        "Assessment": "0xe6de2915bb3c82842fbc18752ad23a8c007bb73e46dfc8ffab8f85bbeb3d270e",
+        "Consumption": "0x65d83836c5e2c43bff2bd1370d5c1fafd47192a54b6b2de8f803719bb0ac9244"
+      }
+    },
+    {
+      "title": "Bridged · route blocked",
+      "amount": "125000000",
+      "assessed": 1795372181,
+      "chain": 43114,
+      "deployment": "0xcf045d20fd5373276a8d8fb14298661070b453e9",
+      "evidence": {
+        "asset": "0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664",
+        "identity": "MATCH",
+        "issuer_quote": "USDC.e on Avalanche is a \"bridged form of Ethereum USDC",
+        "policy": "BLOCK",
+        "policy_quote": "USDC.e is currently not supported on the Avalanche C-Chain.",
+        "policy_revision": "4e66dd82da0e9291fe97d274b57925974f596463fd0ad6ecbc842d2c9c97e45f",
+        "sources": [
+          "https://help.circle.com/support/en/usdc-on-avalanche-vs-usdc-e?id=kb_article_view&sysparm_article=KB0010587",
+          "https://support.kraken.com/au/articles/native-usd-coin"
+        ]
+      },
+      "expires": 1795373981,
+      "key": "avax-bridged-check",
+      "owner": "0x3862140bae556d621d73d601cbaee2437c4b4f1a",
+      "permit": "",
+      "platform": "Kraken",
+      "protocol": "routelock/1",
+      "recipient": "0x0000000000000000000000000000000000000123",
+      "reviewer": "0xd9a2a68e2d83c817a102172e9626d4aa1addfd11",
+      "status": "BLOCKED",
+      "token": "0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664",
+      "transactions": {
+        "Assessment": "0xde2ebeec827ab1b2ae9fa951d4b3a569aa882d0eedefcdcf014e061d6e756d5a"
+      }
+    }
+  ],
+  "acceptance": {
+    "native": {
+      "phase": "native",
+      "balanceBefore": "0",
+      "signer": "0x3862140BaE556D621D73D601CBAEE2437c4B4f1a",
+      "deployment": "0xcf045d20fd5373276a8d8fb14298661070b453e9",
+      "hash": "0xe6de2915bb3c82842fbc18752ad23a8c007bb73e46dfc8ffab8f85bbeb3d270e",
+      "status": "FINALIZED",
+      "execution": "SUCCESS",
+      "consensus": {
+        "0x19a02f95418A6c76091CDA37C4fc542CA82805c9": "idle",
+        "0x534af64FFB6796Bc69aBf4C26c50788F1fFAfe56": "idle",
+        "0x6fe9DE3d0adc76D6416A13CD8107aaE49A3CF98F": "agree",
+        "0x88E148Da14d45c5a5DD2DB25E776eBCBCe0Df539": "agree",
+        "0xee46B9Dc4c860149B1d140840284e5374854e746": "agree"
+      },
+      "record": {
+        "amount": "250000000",
+        "assessed": 1795372143,
+        "chain": 42161,
+        "deployment": "0xcf045d20fd5373276a8d8fb14298661070b453e9",
+        "evidence": {
+          "asset": "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
+          "identity": "MATCH",
+          "issuer_quote": "Arbitrum 0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+          "policy": "ALLOW",
+          "policy_quote": "Both USDC.e and USDC native can be deposited on the Optimism , Polygon and Arbitrum One networks.",
+          "policy_revision": "4e66dd82da0e9291fe97d274b57925974f596463fd0ad6ecbc842d2c9c97e45f",
+          "sources": [
+            "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+            "https://support.kraken.com/au/articles/native-usd-coin"
+          ]
+        },
+        "expires": 1795373943,
+        "key": "arbitrum-native-check",
+        "owner": "0x3862140bae556d621d73d601cbaee2437c4b4f1a",
+        "permit": "cb0543848648d9098da84f08cacfe2c4c1fb47bb76961de0519a85c071526ed8",
+        "platform": "Kraken",
+        "protocol": "routelock/1",
+        "recipient": "0x0000000000000000000000000000000000000123",
+        "reviewer": "0xd9a2a68e2d83c817a102172e9626d4aa1addfd11",
+        "status": "READY",
+        "token": "0xaf88d065e77c8cc2239327c5edb3a432268e5831"
+      },
+      "balanceAfter": "0"
+    },
+    "consume": {
+      "phase": "consume",
+      "balanceBefore": "0",
+      "signer": "0xd9a2a68E2D83C817a102172E9626D4AA1aDdfD11",
+      "deployment": "0xcf045d20fd5373276a8d8fb14298661070b453e9",
+      "hash": "0x65d83836c5e2c43bff2bd1370d5c1fafd47192a54b6b2de8f803719bb0ac9244",
+      "status": "FINALIZED",
+      "execution": "SUCCESS",
+      "consensus": {
+        "0x21e4F7ba6Ec0fbf70C019fbc0F9A797c3ed1F969": "idle",
+        "0x5744305308D62592B7De585e1999c4Ea51E03C29": "idle",
+        "0x62718FbDf0509A398aA525C152D60c1F7A9d33D3": "agree",
+        "0x813890bC5bEDEB4F5437570962379F04738F18Cb": "agree",
+        "0xBE58b43DF1d991e054F743Cc5571dD7029F3B888": "agree"
+      },
+      "record": {
+        "amount": "250000000",
+        "assessed": 1795372143,
+        "chain": 42161,
+        "consumed": 1795372253,
+        "deployment": "0xcf045d20fd5373276a8d8fb14298661070b453e9",
+        "evidence": {
+          "asset": "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
+          "identity": "MATCH",
+          "issuer_quote": "Arbitrum 0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+          "policy": "ALLOW",
+          "policy_quote": "Both USDC.e and USDC native can be deposited on the Optimism , Polygon and Arbitrum One networks.",
+          "policy_revision": "4e66dd82da0e9291fe97d274b57925974f596463fd0ad6ecbc842d2c9c97e45f",
+          "sources": [
+            "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+            "https://support.kraken.com/au/articles/native-usd-coin"
+          ]
+        },
+        "expires": 1795373943,
+        "key": "arbitrum-native-check",
+        "owner": "0x3862140bae556d621d73d601cbaee2437c4b4f1a",
+        "permit": "cb0543848648d9098da84f08cacfe2c4c1fb47bb76961de0519a85c071526ed8",
+        "platform": "Kraken",
+        "protocol": "routelock/1",
+        "recipient": "0x0000000000000000000000000000000000000123",
+        "reviewer": "0xd9a2a68e2d83c817a102172e9626d4aa1addfd11",
+        "status": "CONSUMED",
+        "token": "0xaf88d065e77c8cc2239327c5edb3a432268e5831"
+      },
+      "balanceAfter": "250000000"
+    },
+    "bridged": {
+      "phase": "bridged",
+      "balanceBefore": "0",
+      "signer": "0x3862140BaE556D621D73D601CBAEE2437c4B4f1a",
+      "deployment": "0xcf045d20fd5373276a8d8fb14298661070b453e9",
+      "hash": "0xde2ebeec827ab1b2ae9fa951d4b3a569aa882d0eedefcdcf014e061d6e756d5a",
+      "status": "FINALIZED",
+      "execution": "SUCCESS",
+      "consensus": {
+        "0x19a02f95418A6c76091CDA37C4fc542CA82805c9": "idle",
+        "0x21e4F7ba6Ec0fbf70C019fbc0F9A797c3ed1F969": "agree",
+        "0x240d2d7c8DF220110c26cfFFC532479319Cca0dC": "idle",
+        "0x813890bC5bEDEB4F5437570962379F04738F18Cb": "agree",
+        "0x88E148Da14d45c5a5DD2DB25E776eBCBCe0Df539": "agree"
+      },
+      "record": {
+        "amount": "125000000",
+        "assessed": 1795372181,
+        "chain": 43114,
+        "deployment": "0xcf045d20fd5373276a8d8fb14298661070b453e9",
+        "evidence": {
+          "asset": "0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664",
+          "identity": "MATCH",
+          "issuer_quote": "USDC.e on Avalanche is a \"bridged form of Ethereum USDC",
+          "policy": "BLOCK",
+          "policy_quote": "USDC.e is currently not supported on the Avalanche C-Chain.",
+          "policy_revision": "4e66dd82da0e9291fe97d274b57925974f596463fd0ad6ecbc842d2c9c97e45f",
+          "sources": [
+            "https://help.circle.com/support/en/usdc-on-avalanche-vs-usdc-e?id=kb_article_view&sysparm_article=KB0010587",
+            "https://support.kraken.com/au/articles/native-usd-coin"
+          ]
+        },
+        "expires": 1795373981,
+        "key": "avax-bridged-check",
+        "owner": "0x3862140bae556d621d73d601cbaee2437c4b4f1a",
+        "permit": "",
+        "platform": "Kraken",
+        "protocol": "routelock/1",
+        "recipient": "0x0000000000000000000000000000000000000123",
+        "reviewer": "0xd9a2a68e2d83c817a102172e9626d4aa1addfd11",
+        "status": "BLOCKED",
+        "token": "0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664"
+      },
+      "balanceAfter": "0"
+    }
+  },
+  "bridgedReceiptEntries": [
+    {
+      "mode": "leader",
+      "execution_result": "SUCCESS",
+      "vote": null
+    },
+    {
+      "mode": "validator",
+      "execution_result": "ERROR",
+      "vote": "idle"
+    }
+  ]
+}
