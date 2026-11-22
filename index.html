@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f3ec">
+<meta name="description" content="RouteLock checks public stablecoin deposit rules and binds them to a one-use Studionet payout permit.">
+<title>RouteLock — Stablecoin transfer preflight</title>
+</head>
+<body>
+<div class="shell">
+<header class="bar">
+<a class="brand" href="./"><i aria-hidden="true"></i>RouteLock</a>
+<nav aria-label="Workspace mode"><button id="demo-tab" type="button" aria-pressed="true">Practice</button><button id="live-tab" type="button" aria-pressed="false">Studionet</button></nav>
+<div class="wallet"><span class="network">GENLAYER <b>61999</b></span><button id="connect" type="button">Connect wallet</button><div class="providers" id="providers" hidden></div></div>
+</header>
+<main>
+<section class="intro">
+<div><p class="eyebrow">STABLECOIN PREFLIGHT / KRAKEN DEPOSITS</p><h1>Check the route.</h1><p class="tagline">Same ticker. Different route. Verify before you send.</p></div>
+<div class="intro-note"><b>01 / ASSET</b><b>02 / DEPOSIT POLICY</b><b>03 / PAYOUT PERMIT</b></div>
+</section>
+<section class="workspace" aria-label="Transfer preflight">
+<aside class="intent">
+<h2>Transfer intent</h2>
+<fieldset><legend>Asset &amp; network</legend><div class="segmented"><button id="native" type="button" aria-pressed="true">USDC</button><button id="bridged" type="button" aria-pressed="false">USDC.e</button></div></fieldset>
+<div id="chain-label" class="route-field"></div>
+<label for="amount">Amount · USDC units</label><input id="amount" inputmode="decimal" value="250.00" autocomplete="off">
+<label for="recipient">Recipient · test address</label><input id="recipient" value="0x0000000000000000000000000000000000000123" spellcheck="false" autocomplete="off">
+<div id="live-fields" hidden>
+<label for="contract">RouteLock deployment</label><input id="contract" placeholder="0x…" spellcheck="false" autocomplete="off">
+<label for="reviewer">Independent reviewer wallet</label><input id="reviewer" placeholder="0x…" spellcheck="false" autocomplete="off">
+<label for="key">Intent reference</label><input id="key" spellcheck="false" autocomplete="off">
+<details><summary>Open shared intent</summary>
+<label for="owner">Intent owner</label><input id="owner" placeholder="0x…" spellcheck="false" autocomplete="off">
+<button id="lookup" class="secondary" type="button">Read finalized state</button>
+</details>
+</div>
+<button id="check" class="primary" type="button">Check route <span>→</span></button>
+<p class="hint" id="mode-note">Practice uses sample evidence. Real assets stay untouched.</p>
+</aside>
+<section class="schematic">
+<div class="section-head"><h2>Transfer schematic</h2><span>02 ROUTES</span></div>
+<div class="map" id="map" aria-label="Selectable routes">
+<div class="map-head" aria-hidden="true"><span>ASSET</span><span>NETWORK</span><span>DESTINATION</span></div>
+<div class="route-line" data-route="native"><span class="terminal">01</span><button type="button" data-stop="identity">Native USDC</button><button type="button" data-stop="network">Arbitrum One</button><button type="button" data-stop="policy">Kraken</button></div>
+<div class="route-line" data-route="bridged"><span class="terminal">02</span><button type="button" data-stop="identity">Bridged USDC.e</button><button type="button" data-stop="network">Avalanche C-Chain</button><button type="button" data-stop="policy">Kraken</button></div>
+<div class="map-footer"><span>$ / USDC FAMILY</span><span>PUBLIC DEPOSIT POLICY</span></div>
+</div>
+<div class="station-card" id="station" aria-live="polite"></div>
+</section>
+<aside class="evidence">
+<h2>Evidence &amp; verdict</h2>
+<div class="source"><span>↗</span><div><a id="issuer-link" target="_blank" rel="noopener noreferrer">Circle · Asset identity</a><p id="issuer-note"></p></div></div>
+<div class="source"><span>↗</span><div><a id="exchange-link" target="_blank" rel="noopener noreferrer">Kraken · Deposit policy</a><p id="exchange-note"></p></div></div>
+<div id="verdict" class="verdict"></div>
+<button id="consume" class="secondary" type="button" hidden></button>
+<button id="share" class="secondary" type="button" hidden>Copy intent link</button>
+</aside>
+</section>
+<section class="timeline" aria-label="Transaction lifecycle">
+<div><h2>Finality &amp; receipt</h2><p id="status" role="status">Select a route to inspect its evidence.</p></div>
+<ol id="steps"><li>Intent</li><li>Consensus</li><li>Finalized</li><li>Read back</li></ol>
+<div id="receipt-controls"></div>
+</section>
+</main>
+<footer><span>RouteLock / Stablecoin preflight</span><span>Stable Studionet · Test ledger only</span></footer>
+</div>
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
