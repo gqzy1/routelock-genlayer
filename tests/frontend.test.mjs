@@ -35,3 +35,13 @@ test('validator idleness does not replace the leader execution result', () => {
   assert.equal(executionStatus(receipt), 'SUCCESS');
   assert.equal(executionStatus({ consensus_data: { leader_receipt: [receipt.consensus_data.leader_receipt[1]] } }), 'UNKNOWN');
 });
+
+test('the route schematic branches on the verdict and evidence checkpoint', async () => {
+  const { schematicState } = await import('../src/schematic.js');
+  const states = ['READY', 'BLOCKED', 'CONSUMED', 'EXPIRED'].map(status => schematicState({ status }, 3, false));
+  assert.deepEqual(states.map(state => state[0]), ['ready', 'blocked', 'consumed', 'expired']);
+  assert.deepEqual(states.map(state => state[1]), ['destination', 'network', 'destination', 'destination']);
+  assert.equal(schematicState({ status: 'REVIEW', evidence: { identity: 'UNKNOWN' } }, 3, false)[1], 'asset');
+  assert.equal(schematicState({ status: 'REVIEW', evidence: { identity: 'MATCH' } }, 3, false)[1], 'network');
+  assert.equal(schematicState({ status: 'BLOCKED' }, 1, false)[0], 'checking');
+});

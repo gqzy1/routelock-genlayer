@@ -2,6 +2,7 @@ import './style.css';
 import { getAddress } from 'viem';
 import { CHAIN, RPC, explorer, finalized, read, signer, verifyDeployment } from './chain.js';
 import { practiceCases, phases } from './cases.js';
+import { schematicState } from './schematic.js';
 import { verifyCall } from './receipts.js';
 import { KRAKEN, isAddress, isKey, routes, toUnits } from './routes.js';
 
@@ -22,6 +23,7 @@ let selectedCase = practiceCases[0];
 let animation;
 let animating = false;
 let renderedCaseMode;
+let expiryTimer;
 const release = Object.values(import.meta.glob('../deployment.json', { eager: true, import: 'default' }))[0];
 const liveEvidence = Object.values(import.meta.glob('../evidence/routes.json', { eager: true, import: 'default' }))[0];
 const discovered = new Map();
@@ -42,12 +44,32 @@ function say(message, steps = stepCount) {
   showPhase(Math.max(0, stepCount - 1));
 }
 
+function displayedRecord() {
+  if (mode === 'live' && record?.status === 'READY' && Date.now() >= record.expires * 1000) {
+    return { ...record, status: 'EXPIRED' };
+  }
+  return record;
+}
+
+function renderSchematic() {
+  const [state, position, symbol, message] = schematicState(displayedRecord(), viewedPhase, animating);
+  const map = $('map');
+  for (const line of map.querySelectorAll('.route-line')) {
+    const active = line.dataset.route === route;
+    line.dataset.outcome = active ? state : 'idle';
+    line.dataset.position = active ? position : 'origin';
+    line.querySelector('.route-marker').textContent = active ? symbol : '';
+  }
+  if ($('map-result').textContent !== message) $('map-result').textContent = message;
+}
+
 function showPhase(index) {
   viewedPhase = index;
   [...$('steps').children].forEach((node, position) => {
     node.classList.toggle('done', position < stepCount);
     const control = node.firstElementChild;
     control.disabled = position >= stepCount;
+    control.textContent = (mode === 'demo' ? ['Intent', 'Evidence', 'Decision', 'Replay'] : ['Intent', 'Consensus', 'Finalized', 'Read back'])[position];
     control.setAttribute('aria-current', position === viewedPhase ? 'step' : 'false');
   });
   const phase = phases[viewedPhase];
@@ -58,7 +80,7 @@ function showPhase(index) {
       : phase.detail;
   $('phase-detail').textContent = phase.name + ' · ' + (detail ?? phase.detail);
   document.querySelector('.workspace').dataset.phase = String(viewedPhase);
-  $('map').dataset.phase = String(viewedPhase);
+  renderSchematic();
 }
 
 function renderCases() {
@@ -105,6 +127,11 @@ function selectedContract() { return $('contract').value.trim().toLowerCase(); }
 function selectedKey() { return $('key').value.trim(); }
 
 function render() {
+  clearTimeout(expiryTimer);
+  const shown = displayedRecord();
+  if (mode === 'live' && shown?.status === 'READY') {
+    expiryTimer = setTimeout(render, Math.min(2147483647, Math.max(0, shown.expires * 1000 - Date.now())));
+  }
   const selected = currentRoute();
   $('demo-tab').setAttribute('aria-pressed', mode === 'demo');
   $('live-tab').setAttribute('aria-pressed', mode === 'live');
@@ -123,8 +150,14 @@ function render() {
   $('chain-label').textContent = selected.network + ' → Kraken';
   $('issuer-link').href = selected.issuer;
   $('exchange-link').href = KRAKEN;
-  $('issuer-note').textContent = record?.evidence?.issuer_quote ?? 'Official asset reference';
-  $('exchange-note').textContent = record?.evidence?.policy_quote || (mode === 'demo' ? selected.summary : 'Public deposit rules');
+  $('issuer-note').textContent = shown?.evidence?.identity === 'UNKNOWN'
+    ? 'Asset identity could not be confirmed.'
+    : shown?.evidence?.issuer_quote ?? 'Official asset reference';
+  const examplePolicy = shown?.status === 'REVIEW'
+    ? shown.evidence?.identity === 'UNKNOWN' ? 'Policy approval remains unverified.' : 'Sample policy only mentions withdrawals.'
+    : selected.summary;
+  $('exchange-note').textContent = shown?.evidence?.policy_quote
+    || (mode === 'demo' ? examplePolicy : 'Public deposit rules');
   const stations = {
     identity: ['Issuer contract', selected.address],
     network: ['Sending network', selected.network + ' · EVM chain ' + selected.chain],
@@ -143,28 +176,29 @@ function render() {
     CONSUMED: ['Permit consumed', 'The single-use permit has credited the demo ledger.'],
     EXPIRED: ['Permit expired', 'The time limit has passed. A fresh assessment is required.'],
   };
-  const [title, note] = states[record?.status] ?? ['Awaiting route check', 'Check a route to see its decision and evidence.'];
-  $('verdict').className = 'verdict ' + (record?.status || 'idle').toLowerCase();
+  const [title, note] = states[shown?.status] ?? ['Awaiting route check', 'Check a route to see its decision and evidence.'];
+  $('verdict').className = 'verdict ' + (shown?.status || 'idle').toLowerCase();
   const label = document.createElement('small');
   label.textContent = mode === 'demo' ? 'PRACTICE VERDICT' : 'FINALIZED VERDICT';
   const heading = document.createElement('strong');
   heading.textContent = title;
   const paragraph = document.createElement('p');
-  paragraph.textContent = mode === 'demo' && record?.status === selectedCase?.status ? selectedCase.detail : note;
+  paragraph.textContent = mode === 'demo' && shown?.status === selectedCase?.status ? selectedCase.detail : note;
   $('verdict').replaceChildren(label, heading, paragraph);
   if (record?.expires) {
     const expiry = document.createElement('p');
     expiry.textContent = 'Expires ' + new Date(record.expires * 1000).toLocaleString();
     $('verdict').append(expiry);
   }
-  $('consume').hidden = record?.status !== 'READY' || (mode === 'live' && account !== record.reviewer);
+  $('consume').hidden = shown?.status !== 'READY' || (mode === 'live' && account !== record.reviewer);
   $('consume').textContent = mode === 'demo' ? 'Try permit consumption' : 'Consume permit on Studionet';
-  $('consume').disabled = busy || (mode === 'live' && Boolean(pending));
+  $('consume').disabled = busy || animating || (mode === 'live' && Boolean(pending));
   $('check').disabled = busy || animating || (mode === 'live' && Boolean(pending));
   $('lookup').disabled = busy;
   $('share').hidden = mode === 'demo' || !record?.owner;
   $('connect').textContent = account ? account.slice(0, 6) + '…' + account.slice(-4) : 'Connect wallet';
   renderCases();
+  renderSchematic();
 }
 
 function selectRoute(next, nextStop = 'identity') {
@@ -322,25 +356,30 @@ async function write(task, args) {
 function stopAnimation() {
   clearTimeout(animation);
   animating = false;
-  $('map').classList.remove('checking');
 }
 
 function playPractice() {
   stopAnimation();
   animating = true;
   record = undefined;
-  $('map').classList.add('checking');
   let phase = 0;
   const delay = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 260;
   function advance() {
+    if (phase === 2) {
+      record = {
+        status: selectedCase?.status ?? currentRoute().practice,
+        evidence: { identity: selectedCase?.id === 'identity-missing' ? 'UNKNOWN' : 'MATCH' },
+      };
+      say('Practice · ' + phases[phase].name, phase + 1);
+    }
     if (phase === phases.length - 1) {
-      record = { status: selectedCase?.status ?? currentRoute().practice };
       stopAnimation();
       say('Practice complete · sample decision shown.', 4);
       render();
       return;
     }
-    say('Practice · ' + phases[phase].name, phase + 1);
+    if (phase < 2) say('Practice · ' + phases[phase].name, phase + 1);
+    if (phase === 2) render();
     phase += 1;
     animation = setTimeout(advance, delay);
   }
@@ -370,7 +409,7 @@ async function consume() {
     say('Practice permit consumed in this session.', 4);
     return;
   }
-  if (!record || account !== record.reviewer) throw new Error('Connect the designated reviewer wallet.');
+  if (displayedRecord()?.status !== 'READY' || account !== record.reviewer) throw new Error('Connect the designated reviewer wallet.');
   const { deployment, owner, key, chain, token, recipient, amount, reviewer, permit } = record;
   return write({ action: 'consume', deployment, owner, key, chain, token, recipient, amount, reviewer, permit, signer: account },
     [owner, key, permit]);

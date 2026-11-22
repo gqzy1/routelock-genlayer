@@ -62,8 +62,7 @@ summary { cursor: pointer; }
 .map-footer { display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding: 12px 0 0; }
 .route-line { --rail: #9a998f; display: grid; grid-template-columns: 30px repeat(3,minmax(0,1fr)); position: relative; min-height: 88px; align-items: start; }
 .route-line.active { --rail: var(--cobalt); }
-.route-line.active[data-route="bridged"] { --rail: #ad481c; }
-.route-line::before { content: ""; height: 5px; background: var(--rail); position: absolute; border-radius: 20px; inset: 16px 15% auto 13px; transition: background .22s ease; }
+.route-line::before { content: ""; height: 5px; background: var(--rail); position: absolute; border-radius: 20px; inset: 16px calc(16.667% - 5px) auto 13px; transition: background .22s ease; }
 .terminal { z-index: 1; font: 10px var(--mono); background: var(--rail); color: white; border-radius: 3px; padding: 5px; margin-top: 9px; text-align: center; }
 .route-line button { position: relative; z-index: 1; padding: 38px 3px 0; text-align: center; font-size: 13px; font-weight: 700; border: 0; background: transparent; }
 .route-line button::before { content: ""; width: 18px; height: 18px; border: 4px solid var(--rail); border-radius: 50%; background: var(--paper); box-sizing: border-box; position: absolute; top: 10px; left: calc(50% - 9px); transition: box-shadow .2s, transform .2s; }
@@ -123,11 +122,25 @@ footer { padding: 12px clamp(16px, 3vw, 45px); gap: 10px; border-top: 1px solid 
 .case-card:hover { border-color: var(--ink); transform: translateY(-1px); }
 .case-card[aria-pressed="true"] { border-color: var(--cobalt); background: #edf0ff; }
 .case-card[aria-pressed="true"] small { color: var(--cobalt); }
-.route-line.active::after { content: ""; position: absolute; top: 14px; left: 14%; width: 10px; height: 10px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 3px var(--rail); z-index: 2; pointer-events: none; opacity: 0; transform: translateX(-50%); transition: left .27s ease, opacity .15s; }
-.map.checking .route-line.active::after, .map[data-phase="1"] .route-line.active::after, .map[data-phase="2"] .route-line.active::after, .map[data-phase="3"] .route-line.active::after { opacity: 1; }
-.map[data-phase="1"] .route-line.active::after { left: 40%; }
-.map[data-phase="2"] .route-line.active::after { left: 62%; }
-.map[data-phase="3"] .route-line.active::after { left: 85%; }
+.route-line { --checkpoint: 13px; }
+.route-line[data-position="asset"] { --checkpoint: calc(16.667% + 25px); }
+.route-line[data-position="network"] { --checkpoint: calc(50% + 15px); }
+.route-line[data-position="destination"] { --checkpoint: calc(83.333% + 5px); }
+.route-line.active::before { background: repeating-linear-gradient(90deg, #bcb8ac 0 6px, transparent 6px 11px); }
+.route-line[data-outcome="ready"], .route-line[data-outcome="consumed"] { --rail: #257345; }
+.route-line[data-outcome="blocked"] { --rail: #a93123; }
+.route-line[data-outcome="review"] { --rail: #86510b; }
+.route-line[data-outcome="expired"] { --rail: #6e4873; }
+.progress-rail, .route-marker { position: absolute; pointer-events: none; opacity: 0; }
+.progress-rail { left: 13px; top: 16px; width: calc(var(--checkpoint) - 13px); height: 5px; border-radius: 10px; background: var(--rail); transition: width .24s ease, background .2s, opacity .15s; }
+.route-marker { display: grid; place-items: center; left: var(--checkpoint); top: 18.5px; width: 24px; height: 24px; transform: translate(-50%, -50%); border: 2px solid var(--rail); border-radius: 50%; background: var(--paper); color: var(--rail); font-size: 17px; font-weight: 850; z-index: 2; transition: left .24s ease, opacity .15s; }
+.route-line[data-outcome]:not([data-outcome="idle"]) :is(.progress-rail, .route-marker) { opacity: 1; }
+.route-line[data-outcome="checking"] .route-marker { width: 12px; height: 12px; background: var(--cobalt); }
+.route-line[data-outcome="consumed"] .route-marker { color: white; background: var(--rail); box-shadow: 0 0 0 3px #d9ecdf; }
+.route-line[data-outcome="blocked"] [data-stop="policy"]::before,
+.route-line[data-outcome="review"][data-position="network"] [data-stop="policy"]::before,
+.route-line[data-outcome="review"][data-position="asset"] :is([data-stop="network"], [data-stop="policy"])::before { border-color: #aaa69b; }
+#map-result { color: var(--ink); font-size: 10px; }
 .verdict.expired { background: #fce1c9; }
 .verdict.ready, .verdict.blocked, .verdict.review, .verdict.consumed, .verdict.expired { animation: show-verdict .28s ease-out; }
 @keyframes show-verdict { from { opacity: .3; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }

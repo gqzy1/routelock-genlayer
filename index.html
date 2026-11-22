@@ -46,9 +46,9 @@
 <div class="section-head"><h2>Transfer schematic</h2><span>02 ROUTES</span></div>
 <div class="map" id="map" aria-label="Selectable routes">
 <div class="map-head" aria-hidden="true"><span>ASSET</span><span>NETWORK</span><span>DESTINATION</span></div>
-<div class="route-line" data-route="native"><span class="terminal">01</span><button type="button" data-stop="identity">Native USDC</button><button type="button" data-stop="network">Arbitrum One</button><button type="button" data-stop="policy">Kraken</button></div>
-<div class="route-line" data-route="bridged"><span class="terminal">02</span><button type="button" data-stop="identity">Bridged USDC.e</button><button type="button" data-stop="network">Avalanche C-Chain</button><button type="button" data-stop="policy">Kraken</button></div>
-<div class="map-footer"><span>$ / USDC FAMILY</span><span>PUBLIC DEPOSIT POLICY</span></div>
+<div class="route-line" data-route="native"><span class="terminal">01</span><button type="button" data-stop="identity">Native USDC</button><button type="button" data-stop="network">Arbitrum One</button><button type="button" data-stop="policy">Kraken</button><span class="progress-rail" aria-hidden="true"></span><span class="route-marker" aria-hidden="true"></span></div>
+<div class="route-line" data-route="bridged"><span class="terminal">02</span><button type="button" data-stop="identity">Bridged USDC.e</button><button type="button" data-stop="network">Avalanche C-Chain</button><button type="button" data-stop="policy">Kraken</button><span class="progress-rail" aria-hidden="true"></span><span class="route-marker" aria-hidden="true"></span></div>
+<div class="map-footer"><span id="map-result" role="status"></span><span>PUBLIC DEPOSIT POLICY</span></div>
 </div>
 <div class="station-card" id="station" aria-live="polite"></div>
 </section>
