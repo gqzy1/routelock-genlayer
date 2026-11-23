@@ -28,9 +28,9 @@ export function verifyCall(receipt, task) {
   const method = call instanceof Map ? call.get('method') : call?.method;
   const args = call instanceof Map ? call.get('args') : call?.args;
   const expected = task.action === 'assess'
-    ? [task.key, task.chain, task.token, task.recipient, task.amount, task.reviewer, 30]
+    ? [task.key, task.chain, task.token, task.recipient, task.amount, task.reviewer, 30, task.expectedRevision]
     : [task.owner, task.key, task.permit];
-  if ((landed && landed.toLowerCase() !== task.hash.toLowerCase())
+  if (landed?.toLowerCase() !== task.hash.toLowerCase()
     || target?.toLowerCase() !== task.deployment || sender?.toLowerCase() !== task.signer
     || method !== task.action || !Array.isArray(args) || args.length !== expected.length
     || !expected.every((value, index) => String(value).toLowerCase() === String(args[index]).toLowerCase())) {

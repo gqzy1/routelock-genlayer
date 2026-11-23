@@ -45,3 +45,42 @@ test('the route schematic branches on the verdict and evidence checkpoint', asyn
   assert.equal(schematicState({ status: 'REVIEW', evidence: { identity: 'MATCH' } }, 3, false)[1], 'network');
   assert.equal(schematicState({ status: 'BLOCKED' }, 1, false)[0], 'checking');
 });
+
+test('published cases require the current verified deployment and exact finalized state', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const { createHash } = await import('node:crypto');
+  const historical = await readFile(new URL('../evidence/routes-routelock-1.json', import.meta.url));
+  assert.equal(createHash('sha256').update(historical).digest('hex'),
+    '5e2cd830c11014e9fa8411f51278f19378be378a8c5c658009d36f19a008f51d');
+  const old = JSON.parse(historical);
+  const { liveRecords, matchesPublishedRecord, releaseAddress, PROTOCOL, routes } = await import('../src/routes.js');
+  const hash = '0x' + '1'.repeat(64);
+  const address = '0x' + '2'.repeat(40);
+  const release = { chainId: 61999, protocol: PROTOCOL, address, deploymentTx: hash,
+    sourceSha256: 'a'.repeat(64), status: 'verified', finality: 'FINALIZED', execution: 'SUCCESS' };
+  const record = { protocol: PROTOCOL, deployment: address, revision: 1, status: 'READY',
+    token: routes.native.address, chain: routes.native.chain,
+    evidence: { sha: 'expected', asset: routes.native.address, chain: routes.native.chain, operation: 'deposit' } };
+  const published = { ...record, title: 'Native deposit', transactions: { Assessment: hash } };
+  assert.equal(releaseAddress({ ...release, execution: 'FAILURE' }), '');
+  assert.deepEqual(liveRecords(release, old), []);
+  assert.deepEqual(liveRecords(release, { ...release, records: old.records }), []);
+  assert.deepEqual(liveRecords(release, { ...release, records: [published] }), [published]);
+  assert(matchesPublishedRecord(record, published));
+  assert(!matchesPublishedRecord(record, { ...published, status: 'CONSUMED' }));
+  assert(!matchesPublishedRecord(record, { ...published, evidence: { ...record.evidence, sha: 'tampered' } }));
+  assert(!matchesPublishedRecord({ ...record, revision: 2 }, published));
+});
+
+test('assessment receipts bind the prior revision and cannot be reused for a later check', () => {
+  const task = { hash: '0x123', deployment: '0xaa', signer: '0xbb', action: 'assess',
+    key: 'ref-1', chain: 42161, token: '0xcc', recipient: '0xdd',
+    amount: '100', reviewer: '0xee', expectedRevision: 1 };
+  const receipt = { hash: task.hash, to_address: task.deployment, from_address: task.signer,
+    txDataDecoded: { callData: new Map([['method', 'assess'], ['args',
+      [task.key, task.chain, task.token, task.recipient, 100n, task.reviewer, 30n, 1n]]]) } };
+  assert.doesNotThrow(() => verifyCall(receipt, task));
+  assert.throws(() => verifyCall(receipt, { ...task, expectedRevision: 2 }), /signed call/);
+  assert.throws(() => verifyCall({ ...receipt, hash: undefined }, task), /signed call/);
+  assert.throws(() => verifyCall({ ...receipt, to_address: '0xff' }, task), /signed call/);
+});

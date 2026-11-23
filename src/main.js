@@ -4,11 +4,11 @@ import { CHAIN, RPC, explorer, finalized, read, signer, verifyDeployment } from 
 import { practiceCases, phases } from './cases.js';
 import { schematicState } from './schematic.js';
 import { verifyCall } from './receipts.js';
-import { KRAKEN, isAddress, isKey, routes, toUnits } from './routes.js';
+import { POLICY_NOTICE, PROTOCOL, isAddress, isKey, liveRecords, matchesPublishedRecord, releaseAddress, routes, toUnits } from './routes.js';
 
 const $ = id => document.getElementById(id);
 const addressPattern = /^0x[\da-f]{64}$/i;
-const storageKey = 'routelock-pending-v1';
+const storageKey = 'routelock-pending-v2';
 let route = 'native';
 let mode = 'demo';
 let stop = 'identity';
@@ -24,8 +24,10 @@ let animation;
 let animating = false;
 let renderedCaseMode;
 let expiryTimer;
+let verifiedPublished;
 const release = Object.values(import.meta.glob('../deployment.json', { eager: true, import: 'default' }))[0];
 const liveEvidence = Object.values(import.meta.glob('../evidence/routes.json', { eager: true, import: 'default' }))[0];
+const publishedRecords = liveRecords(release, liveEvidence);
 const discovered = new Map();
 
 function readPending() {
@@ -84,7 +86,7 @@ function showPhase(index) {
 }
 
 function renderCases() {
-  const cards = mode === 'demo' ? practiceCases : liveEvidence?.records ?? [];
+  const cards = mode === 'demo' ? practiceCases : publishedRecords;
   $('case-heading').textContent = mode === 'demo' ? 'Practice scenarios' : 'Verified Studionet intents';
   $('case-count').textContent = cards.length ? cards.length + ' CASES' : 'Awaiting live evidence';
   if (renderedCaseMode !== mode) {
@@ -102,9 +104,10 @@ function renderCases() {
           $('recipient').value = '0x0000000000000000000000000000000000000123';
           playPractice();
         } else {
+          $('contract').value = item.deployment;
           $('owner').value = item.owner;
           $('key').value = item.key;
-          run(lookup);
+          run(() => lookup(item));
         }
       });
       element.className = 'case-card';
@@ -149,7 +152,7 @@ function render() {
   }
   $('chain-label').textContent = selected.network + ' → Kraken';
   $('issuer-link').href = selected.issuer;
-  $('exchange-link').href = KRAKEN;
+  $('exchange-link').href = shown?.evidence?.policy_source === POLICY_NOTICE ? POLICY_NOTICE : selected.policy;
   $('issuer-note').textContent = shown?.evidence?.identity === 'UNKNOWN'
     ? 'Asset identity could not be confirmed.'
     : shown?.evidence?.issuer_quote ?? 'Official asset reference';
@@ -281,10 +284,12 @@ async function readRecord(deployment, owner, key) {
   const raw = await read(deployment, 'read_intent', [owner, key]);
   if (!raw) throw new Error('No finalized intent at that reference.');
   const result = JSON.parse(raw);
-  if (result.deployment !== deployment || result.owner !== owner || result.key !== key) {
+  if (result.protocol !== PROTOCOL || result.deployment !== deployment || result.owner !== owner || result.key !== key) {
     throw new Error('Finalized record does not match the selected intent.');
   }
-  if (!Object.values(routes).some(item => item.chain === result.chain && item.address === result.token)) {
+  if (!Number.isSafeInteger(result.revision) || result.revision < 1 || result.evidence?.chain !== result.chain
+      || result.evidence?.asset !== result.token || result.evidence?.operation !== 'deposit'
+      || !Object.values(routes).some(item => item.chain === result.chain && item.address === result.token)) {
     throw new Error('The record does not describe a supported route.');
   }
   return result;
@@ -316,9 +321,15 @@ async function resume() {
     throw new Error('Finalized with an execution failure. Inspect the transaction in Explorer.');
   }
   const result = await readRecord(task.deployment, task.owner, task.key);
+  if (task.action === 'assess' && result.revision > task.expectedRevision + 1) {
+    recoverableHash = task.hash;
+    savePending(null);
+    throw new Error('Finalized assessment was superseded by a later revision. Use Lookup for current state.');
+  }
   if (result.chain !== task.chain || result.token !== task.token || result.recipient !== task.recipient
     || result.amount !== task.amount || result.reviewer !== task.reviewer
-    || (task.action === 'consume' && result.status !== 'CONSUMED')) {
+    || (task.action === 'assess' && result.revision !== task.expectedRevision + 1)
+    || (task.action === 'consume' && (result.status !== 'CONSUMED' || result.permit !== task.permit))) {
     throw new Error('Finalized state does not match the submitted intent.');
   }
   if (task.action === 'consume') {
@@ -398,9 +409,15 @@ async function check() {
   const key = selectedKey();
   if (!isAddress(deployment) || !isKey(key)) throw new Error('Enter a deployment and a 3–40 character reference.');
   if (!isAddress(reviewer) || reviewer === account) throw new Error('Enter a reviewer address different from the sender.');
-  return write({ action: 'assess', deployment, owner: account, signer: account, key, chain: selected.chain,
-    token: selected.address, recipient, amount: amount.toString(), reviewer },
-  [key, BigInt(selected.chain), selected.address, recipient, amount, reviewer, 30n]);
+  const owner = account;
+  if (!isAddress(owner)) throw new Error('Connect a Studionet wallet first.');
+  await verifyDeployment(deployment);
+  const previous = await read(deployment, 'read_intent', [owner, key]);
+  const expectedRevision = previous ? JSON.parse(previous).revision : 0;
+  if (!Number.isSafeInteger(expectedRevision) || expectedRevision < 0) throw new Error('Invalid intent revision.');
+  return write({ action: 'assess', deployment, owner, signer: owner, key, chain: selected.chain,
+    token: selected.address, recipient, amount: amount.toString(), reviewer, expectedRevision },
+  [key, BigInt(selected.chain), selected.address, recipient, amount, reviewer, 30n, BigInt(expectedRevision)]);
 }
 
 async function consume() {
@@ -415,13 +432,28 @@ async function consume() {
     [owner, key, permit]);
 }
 
-async function lookup() {
+async function lookup(published) {
   const deployment = selectedContract();
   const owner = $('owner').value.trim().toLowerCase();
   const key = selectedKey();
   if (!isAddress(deployment) || !isAddress(owner) || !isKey(key)) throw new Error('Enter deployment, owner and intent reference.');
   await verifyDeployment(deployment);
-  present(await readRecord(deployment, owner, key));
+  const result = await readRecord(deployment, owner, key);
+  if (published) {
+    if (!matchesPublishedRecord(result, published)) {
+      throw new Error('Published evidence differs from finalized contract state. Use Lookup for current state.');
+    }
+    const actions = { Assessment: 'assess', Consumption: 'consume' };
+    await Promise.all(Object.entries(published.transactions).map(async ([label, hash]) => {
+      const action = actions[label];
+      const { receipt, execution } = await finalized(hash);
+      if (!action || execution !== 'SUCCESS') throw new Error('Published receipt verification failed.');
+      verifyCall(receipt, { ...result, hash, action, expectedRevision: result.revision - 1,
+        signer: action === 'assess' ? result.owner : result.reviewer });
+    }));
+    verifiedPublished = published;
+  }
+  present(result);
   say('Read back from finalized contract state.', 4);
 }
 
@@ -465,7 +497,7 @@ function receiptControls() {
       say('No matching finalized change yet. Check wallet activity before submitting again.', 1);
     })));
   } else if (recoverableHash) addLink(recoverableHash);
-  const published = liveEvidence?.records.find(item => item.owner === record?.owner && item.key === record?.key && item.deployment === record?.deployment);
+  const published = record && verifiedPublished && matchesPublishedRecord(record, verifiedPublished) ? verifiedPublished : undefined;
   if (published) {
     for (const [label, hash] of Object.entries(published.transactions)) {
       if (hash !== recoverableHash) addLink(hash, label);
@@ -493,7 +525,7 @@ $('map').onclick = event => {
 $('connect').onclick = () => { walletChoices(); $('providers').hidden = !$('providers').hidden; };
 $('check').onclick = () => run(check);
 $('consume').onclick = () => run(consume);
-$('lookup').onclick = () => run(lookup);
+$('lookup').onclick = () => run(() => lookup());
 $('share').onclick = () => run(async () => {
   const url = new URL(location.href);
   url.search = new URLSearchParams({ contract: record.deployment, owner: record.owner, key: record.key });
@@ -501,7 +533,7 @@ $('share').onclick = () => run(async () => {
   say('Read-only intent link copied.');
 });
 [...$('steps').children].forEach((node, index) => node.firstElementChild.onclick = () => showPhase(index));
-if (release) $('contract').value = release.address.toLowerCase();
+$('contract').value = releaseAddress(release);
 for (const id of ['amount', 'recipient', 'contract', 'key', 'owner', 'reviewer']) {
   $(id).addEventListener('input', () => { stopAnimation(); record = undefined; say('Intent edited. Run a new check.', 1); render(); });
 }

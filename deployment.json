@@ -1,6 +1,24 @@
 {
   "chainId": 61999,
-  "address": "0xCF045D20fD5373276A8D8Fb14298661070b453E9",
-  "deploymentTx": "0x6b861ca12522e9ab769996f242fa37fa360aa56bb4df71b1a40f944f7534570a",
-  "sourceSha256": "c2e582a3306dad05d03c7cf24fbbecf92d39a96ca7e0bd0c66699e48db8d5739"
+  "protocol": "routelock/2",
+  "status": "verified",
+  "address": "0x0c023865876BaD39f32aa227C00E3f46CdD92bF4",
+  "deploymentTx": "0x503f5ae96d3d077665c1c83562a4deba3fede6629ef4d28ff563f78944af6c41",
+  "sourceSha256": "43d85457138e3e2ec832064187c9da6a832e52e2f198659db896a4318acda2bc",
+  "finality": "FINALIZED",
+  "execution": "SUCCESS",
+  "previousDeployment": {
+    "protocol": "routelock/1",
+    "chainId": 61999,
+    "address": "0xCF045D20fD5373276A8D8Fb14298661070b453E9",
+    "deploymentTx": "0x6b861ca12522e9ab769996f242fa37fa360aa56bb4df71b1a40f944f7534570a",
+    "sourceSha256": "c2e582a3306dad05d03c7cf24fbbecf92d39a96ca7e0bd0c66699e48db8d5739"
+  },
+  "previousPolicyValidation": {
+    "address": "0x2F20900c9f0818cDd50c19B9ef3fb1DE28f326a6",
+    "deploymentTx": "0xd0505c5e86f11bf7d52e026bfc9389b3943c92ec9d698a1029cb4cfa34406e5d",
+    "sourceSha256": "7d5ccbebfe40d00ec3a2966a9e1c65feaf526c9e325b44127b5dbed6489d4ab3",
+    "outcome": "REVIEW",
+    "evidence": "evidence/routes-routelock-2-review.json"
+  }
 }

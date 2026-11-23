@@ -1,0 +1,161 @@
+{
+  "chainId": 61999,
+  "protocol": "routelock/2",
+  "status": "verified",
+  "address": "0x2F20900c9f0818cDd50c19B9ef3fb1DE28f326a6",
+  "deploymentTx": "0xd0505c5e86f11bf7d52e026bfc9389b3943c92ec9d698a1029cb4cfa34406e5d",
+  "sourceSha256": "7d5ccbebfe40d00ec3a2966a9e1c65feaf526c9e325b44127b5dbed6489d4ab3",
+  "finality": "FINALIZED",
+  "execution": "SUCCESS",
+  "records": [
+    {
+      "phase": "native",
+      "signer": "0x9bc879398498c1d9a42b3b8be5edba3bc7b0d6fb",
+      "deployment": "0x2f20900c9f0818cdd50c19b9ef3fb1de28f326a6",
+      "hash": "0x8129b37acd76d4443de97618120c35223edda5bf951708025130db363fc16160",
+      "status": "FINALIZED",
+      "execution": "SUCCESS",
+      "balanceBefore": "0",
+      "balanceAfter": "0",
+      "consensus": {
+        "0x21e4F7ba6Ec0fbf70C019fbc0F9A797c3ed1F969": "idle",
+        "0x240d2d7c8DF220110c26cfFFC532479319Cca0dC": "agree",
+        "0x6DC61b906F74F44612c5545b0b79486133B3556d": "agree",
+        "0x725Ab89db6A9DD886Ba71Bc5E63a01070C325bE3": "agree",
+        "0xee46B9Dc4c860149B1d140840284e5374854e746": "idle"
+      },
+      "record": {
+        "amount": "250000000",
+        "assessed": 1795412732,
+        "chain": 42161,
+        "deployment": "0x2f20900c9f0818cdd50c19b9ef3fb1de28f326a6",
+        "evidence": {
+          "assessed": 1795412732,
+          "asset": "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
+          "chain": 42161,
+          "identity": "MATCH",
+          "issuer_quote": "Arbitrum 0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+          "network": "Arbitrum One",
+          "operation": "deposit",
+          "policy": "REVIEW",
+          "policy_date": "",
+          "policy_date_basis": "",
+          "policy_effective_from": "",
+          "policy_in_force_by": "",
+          "policy_quote": "",
+          "policy_revision": "d180276512ebb915028bf057a2571eca131875efef9980b4ffb213ad3806002b",
+          "policy_source": "",
+          "sources": [
+            "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+            "https://support.kraken.com/au/articles/native-usd-coin",
+            "https://support.kraken.com/ca/articles/usdce-support-ending-arbitrum-optimism-polygon"
+          ],
+          "variant": "native USDC",
+          "versions": [
+            {
+              "sha256": "139d559ec540e287c937de0cab62b0ce5cee6bddaaf662da85a2816623801d06",
+              "status": "READ",
+              "url": "https://developers.circle.com/stablecoins/usdc-contract-addresses"
+            },
+            {
+              "sha256": "060bb15f37e0c9e9c40b5e5b0616c4c43e952b5e12cd5b16cfe240fdaaae53ff",
+              "status": "UNVERIFIED",
+              "url": "https://support.kraken.com/au/articles/native-usd-coin"
+            },
+            {
+              "sha256": "fea6ed16ae039b0e31a27f738723f3ac60ad93006b6cf50e54a511d962bde76b",
+              "status": "READ",
+              "updated": "2026-11-05",
+              "url": "https://support.kraken.com/ca/articles/usdce-support-ending-arbitrum-optimism-polygon"
+            }
+          ]
+        },
+        "expires": 1795414532,
+        "key": "arbitrum-native-check",
+        "owner": "0x9bc879398498c1d9a42b3b8be5edba3bc7b0d6fb",
+        "permit": "",
+        "platform": "Kraken",
+        "protocol": "routelock/2",
+        "recipient": "0x0000000000000000000000000000000000000123",
+        "reviewer": "0x0a6c1aa4c6e10e7cd3ad32c6882852067bc092ef",
+        "revision": 1,
+        "status": "REVIEW",
+        "token": "0xaf88d065e77c8cc2239327c5edb3a432268e5831"
+      }
+    },
+    {
+      "phase": "bridged",
+      "signer": "0x9bc879398498c1d9a42b3b8be5edba3bc7b0d6fb",
+      "deployment": "0x2f20900c9f0818cdd50c19b9ef3fb1de28f326a6",
+      "hash": "0x7f995413e720788430cb31649ad990cee6f20e7a00676b245d4920f43452741d",
+      "status": "FINALIZED",
+      "execution": "SUCCESS",
+      "balanceBefore": "0",
+      "balanceAfter": "0",
+      "consensus": {
+        "0x240d2d7c8DF220110c26cfFFC532479319Cca0dC": "agree",
+        "0x5744305308D62592B7De585e1999c4Ea51E03C29": "agree",
+        "0x6fe9DE3d0adc76D6416A13CD8107aaE49A3CF98F": "idle",
+        "0xBE58b43DF1d991e054F743Cc5571dD7029F3B888": "agree"
+      },
+      "record": {
+        "amount": "125000000",
+        "assessed": 1795412785,
+        "chain": 43114,
+        "deployment": "0x2f20900c9f0818cdd50c19b9ef3fb1de28f326a6",
+        "evidence": {
+          "assessed": 1795412785,
+          "asset": "0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664",
+          "chain": 43114,
+          "identity": "MATCH",
+          "issuer_quote": "USDC.e on Avalanche is a \"bridged form of Ethereum USDC",
+          "network": "Avalanche C-Chain",
+          "operation": "deposit",
+          "policy": "REVIEW",
+          "policy_date": "",
+          "policy_date_basis": "",
+          "policy_effective_from": "",
+          "policy_in_force_by": "",
+          "policy_quote": "",
+          "policy_revision": "ac83153af1f140368c93a2c24cfdcffd2519126cdacb2dd46af1ecb41b879354",
+          "policy_source": "",
+          "sources": [
+            "https://help.circle.com/support/en/usdc-on-avalanche-vs-usdc-e?id=kb_article_view&sysparm_article=KB0010587",
+            "https://support.kraken.com/au/articles/native-usd-coin",
+            "https://support.kraken.com/ca/articles/usdce-support-ending-arbitrum-optimism-polygon"
+          ],
+          "variant": "USDC.e",
+          "versions": [
+            {
+              "sha256": "33092b3b7f4962016648e3a9a7ebf837b5f232135fd0b6e03d287c208a737b26",
+              "status": "READ",
+              "url": "https://help.circle.com/support/en/usdc-on-avalanche-vs-usdc-e?id=kb_article_view&sysparm_article=KB0010587"
+            },
+            {
+              "sha256": "060bb15f37e0c9e9c40b5e5b0616c4c43e952b5e12cd5b16cfe240fdaaae53ff",
+              "status": "UNVERIFIED",
+              "url": "https://support.kraken.com/au/articles/native-usd-coin"
+            },
+            {
+              "sha256": "fea6ed16ae039b0e31a27f738723f3ac60ad93006b6cf50e54a511d962bde76b",
+              "status": "READ",
+              "updated": "2026-11-05",
+              "url": "https://support.kraken.com/ca/articles/usdce-support-ending-arbitrum-optimism-polygon"
+            }
+          ]
+        },
+        "expires": 1795414585,
+        "key": "avax-bridged-check",
+        "owner": "0x9bc879398498c1d9a42b3b8be5edba3bc7b0d6fb",
+        "permit": "",
+        "platform": "Kraken",
+        "protocol": "routelock/2",
+        "recipient": "0x0000000000000000000000000000000000000123",
+        "reviewer": "0x0a6c1aa4c6e10e7cd3ad32c6882852067bc092ef",
+        "revision": 1,
+        "status": "REVIEW",
+        "token": "0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664"
+      }
+    }
+  ]
+}

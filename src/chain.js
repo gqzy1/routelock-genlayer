@@ -3,12 +3,13 @@ import { createClient } from 'genlayer-js';
 import { studionet } from 'genlayer-js/chains';
 import { TransactionStatus } from 'genlayer-js/types';
 import { executionStatus } from './receipts.js';
+import { PROTOCOL, STUDIONET_ID } from './routes.js';
 import source from '../contracts/routelock.py?raw';
 
 export const RPC = 'https://studio.genlayer.com/api';
 export const CHAIN = '0xf22f';
-export const protocol = 'routelock/1';
-const chain = { ...studionet, id: 61999, rpcUrls: { default: { http: [RPC] } } };
+export const protocol = PROTOCOL;
+const chain = { ...studionet, id: STUDIONET_ID, rpcUrls: { default: { http: [RPC] } } };
 export const readonly = createClient({ chain, endpoint: RPC });
 export const explorer = 'https://explorer-studio.genlayer.com';
 

@@ -1,224 +1,541 @@
 {
   "chainId": 61999,
-  "address": "0xCF045D20fD5373276A8D8Fb14298661070b453E9",
-  "deploymentTx": "0x6b861ca12522e9ab769996f242fa37fa360aa56bb4df71b1a40f944f7534570a",
-  "sourceSha256": "c2e582a3306dad05d03c7cf24fbbecf92d39a96ca7e0bd0c66699e48db8d5739",
+  "protocol": "routelock/2",
+  "address": "0x0c023865876BaD39f32aa227C00E3f46CdD92bF4",
+  "deploymentTx": "0x503f5ae96d3d077665c1c83562a4deba3fede6629ef4d28ff563f78944af6c41",
+  "sourceSha256": "43d85457138e3e2ec832064187c9da6a832e52e2f198659db896a4318acda2bc",
+  "status": "verified",
   "records": [
     {
-      "title": "Native · permit consumed",
+      "title": "Arbitrum native USDC",
       "amount": "250000000",
-      "assessed": 1795372143,
+      "assessed": 1795413295,
       "chain": 42161,
-      "consumed": 1795372253,
-      "deployment": "0xcf045d20fd5373276a8d8fb14298661070b453e9",
+      "consumed": 1795413366,
+      "deployment": "0x0c023865876bad39f32aa227c00e3f46cdd92bf4",
       "evidence": {
+        "assessed": 1795413295,
         "asset": "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
+        "chain": 42161,
         "identity": "MATCH",
         "issuer_quote": "Arbitrum 0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+        "network": "Arbitrum One",
+        "operation": "deposit",
         "policy": "ALLOW",
-        "policy_quote": "Both USDC.e and USDC native can be deposited on the Optimism , Polygon and Arbitrum One networks.",
-        "policy_revision": "4e66dd82da0e9291fe97d274b57925974f596463fd0ad6ecbc842d2c9c97e45f",
+        "policy_date": "2026-10-19",
+        "policy_date_basis": "documented_current_on",
+        "policy_effective_from": "",
+        "policy_in_force_by": "2026-10-19",
+        "policy_quote": "Kraken now supports deposits and withdrawals of Optimism, Polygon and Arbitrum’s native USD Coin (USDC).",
+        "policy_revision": "6559a85f4d3d3f063d35703cd999a4a971dd8301444b5c8005bd044dccaea2ef",
+        "policy_source": "https://support.kraken.com/articles/native-usd-coin",
         "sources": [
           "https://developers.circle.com/stablecoins/usdc-contract-addresses",
-          "https://support.kraken.com/au/articles/native-usd-coin"
+          "https://support.kraken.com/articles/native-usd-coin",
+          "https://support.kraken.com/ca/articles/usdce-support-ending-arbitrum-optimism-polygon"
+        ],
+        "variant": "native USDC",
+        "versions": [
+          {
+            "sha256": "139d559ec540e287c937de0cab62b0ce5cee6bddaaf662da85a2816623801d06",
+            "status": "READ",
+            "url": "https://developers.circle.com/stablecoins/usdc-contract-addresses"
+          },
+          {
+            "sha256": "2eeba0ba5c4b89e4cf69ebe08e8ff575dbff5e04aa8618ccd1048c3e7c3c8bb1",
+            "status": "READ",
+            "updated": "2026-10-19",
+            "url": "https://support.kraken.com/articles/native-usd-coin"
+          },
+          {
+            "sha256": "fea6ed16ae039b0e31a27f738723f3ac60ad93006b6cf50e54a511d962bde76b",
+            "status": "READ",
+            "updated": "2026-11-05",
+            "url": "https://support.kraken.com/ca/articles/usdce-support-ending-arbitrum-optimism-polygon"
+          }
         ]
       },
-      "expires": 1795373943,
+      "expires": 1795415095,
       "key": "arbitrum-native-check",
-      "owner": "0x3862140bae556d621d73d601cbaee2437c4b4f1a",
-      "permit": "cb0543848648d9098da84f08cacfe2c4c1fb47bb76961de0519a85c071526ed8",
+      "owner": "0x9bc879398498c1d9a42b3b8be5edba3bc7b0d6fb",
+      "permit": "448d71c302174ecb500d40bf32c959029a0a0274c1f9da02b54494efd4aaef02",
       "platform": "Kraken",
-      "protocol": "routelock/1",
+      "protocol": "routelock/2",
       "recipient": "0x0000000000000000000000000000000000000123",
-      "reviewer": "0xd9a2a68e2d83c817a102172e9626d4aa1addfd11",
+      "reviewer": "0x0a6c1aa4c6e10e7cd3ad32c6882852067bc092ef",
+      "revision": 1,
       "status": "CONSUMED",
       "token": "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
       "transactions": {
-        "Assessment": "0xe6de2915bb3c82842fbc18752ad23a8c007bb73e46dfc8ffab8f85bbeb3d270e",
-        "Consumption": "0x65d83836c5e2c43bff2bd1370d5c1fafd47192a54b6b2de8f803719bb0ac9244"
+        "Assessment": "0x535ac2c473e6127bbfbdc29f15b92249640dc75f6a1a35440043ee2de439ac74",
+        "Consumption": "0x68cf75d7cf40bc246a8f5d4119d95193badc38294c8f2888c60d295909c7b7f1"
       }
     },
     {
-      "title": "Bridged · route blocked",
+      "title": "Avalanche USDC.e",
       "amount": "125000000",
-      "assessed": 1795372181,
+      "assessed": 1795413421,
       "chain": 43114,
-      "deployment": "0xcf045d20fd5373276a8d8fb14298661070b453e9",
+      "deployment": "0x0c023865876bad39f32aa227c00e3f46cdd92bf4",
       "evidence": {
+        "assessed": 1795413421,
         "asset": "0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664",
+        "chain": 43114,
         "identity": "MATCH",
         "issuer_quote": "USDC.e on Avalanche is a \"bridged form of Ethereum USDC",
+        "network": "Avalanche C-Chain",
+        "operation": "deposit",
         "policy": "BLOCK",
+        "policy_date": "2026-10-19",
+        "policy_date_basis": "documented_current_on",
+        "policy_effective_from": "",
+        "policy_in_force_by": "2026-10-19",
         "policy_quote": "USDC.e is currently not supported on the Avalanche C-Chain.",
-        "policy_revision": "4e66dd82da0e9291fe97d274b57925974f596463fd0ad6ecbc842d2c9c97e45f",
+        "policy_revision": "c6a92b97b7dc2fab9330e8ef1a9984e9fb454ff4b881c4f6a45d2327880a7559",
+        "policy_source": "https://support.kraken.com/articles/native-usd-coin",
         "sources": [
           "https://help.circle.com/support/en/usdc-on-avalanche-vs-usdc-e?id=kb_article_view&sysparm_article=KB0010587",
-          "https://support.kraken.com/au/articles/native-usd-coin"
+          "https://support.kraken.com/articles/native-usd-coin",
+          "https://support.kraken.com/ca/articles/usdce-support-ending-arbitrum-optimism-polygon"
+        ],
+        "variant": "USDC.e",
+        "versions": [
+          {
+            "sha256": "33092b3b7f4962016648e3a9a7ebf837b5f232135fd0b6e03d287c208a737b26",
+            "status": "READ",
+            "url": "https://help.circle.com/support/en/usdc-on-avalanche-vs-usdc-e?id=kb_article_view&sysparm_article=KB0010587"
+          },
+          {
+            "sha256": "2eeba0ba5c4b89e4cf69ebe08e8ff575dbff5e04aa8618ccd1048c3e7c3c8bb1",
+            "status": "READ",
+            "updated": "2026-10-19",
+            "url": "https://support.kraken.com/articles/native-usd-coin"
+          },
+          {
+            "sha256": "fea6ed16ae039b0e31a27f738723f3ac60ad93006b6cf50e54a511d962bde76b",
+            "status": "READ",
+            "updated": "2026-11-05",
+            "url": "https://support.kraken.com/ca/articles/usdce-support-ending-arbitrum-optimism-polygon"
+          }
         ]
       },
-      "expires": 1795373981,
+      "expires": 1795415221,
       "key": "avax-bridged-check",
-      "owner": "0x3862140bae556d621d73d601cbaee2437c4b4f1a",
+      "owner": "0x9bc879398498c1d9a42b3b8be5edba3bc7b0d6fb",
       "permit": "",
       "platform": "Kraken",
-      "protocol": "routelock/1",
+      "protocol": "routelock/2",
       "recipient": "0x0000000000000000000000000000000000000123",
-      "reviewer": "0xd9a2a68e2d83c817a102172e9626d4aa1addfd11",
+      "reviewer": "0x0a6c1aa4c6e10e7cd3ad32c6882852067bc092ef",
+      "revision": 1,
       "status": "BLOCKED",
       "token": "0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664",
       "transactions": {
-        "Assessment": "0xde2ebeec827ab1b2ae9fa951d4b3a569aa882d0eedefcdcf014e061d6e756d5a"
+        "Assessment": "0x84d15e9df62a9561fa1eaf2773919684045b803a655aaf35c3ba3cb368d2a9e5"
       }
     }
   ],
   "acceptance": {
     "native": {
       "phase": "native",
-      "balanceBefore": "0",
-      "signer": "0x3862140BaE556D621D73D601CBAEE2437c4B4f1a",
-      "deployment": "0xcf045d20fd5373276a8d8fb14298661070b453e9",
-      "hash": "0xe6de2915bb3c82842fbc18752ad23a8c007bb73e46dfc8ffab8f85bbeb3d270e",
+      "signer": "0x9bc879398498c1d9a42b3b8be5edba3bc7b0d6fb",
+      "deployment": "0x0c023865876bad39f32aa227c00e3f46cdd92bf4",
+      "hash": "0x535ac2c473e6127bbfbdc29f15b92249640dc75f6a1a35440043ee2de439ac74",
       "status": "FINALIZED",
       "execution": "SUCCESS",
+      "balanceBefore": "0",
+      "balanceAfter": "0",
       "consensus": {
-        "0x19a02f95418A6c76091CDA37C4fc542CA82805c9": "idle",
-        "0x534af64FFB6796Bc69aBf4C26c50788F1fFAfe56": "idle",
-        "0x6fe9DE3d0adc76D6416A13CD8107aaE49A3CF98F": "agree",
-        "0x88E148Da14d45c5a5DD2DB25E776eBCBCe0Df539": "agree",
+        "0x240d2d7c8DF220110c26cfFFC532479319Cca0dC": "idle",
+        "0x5744305308D62592B7De585e1999c4Ea51E03C29": "agree",
+        "0x5e880d85a70De78dDEf86236d57c42e73F560615": "agree",
+        "0xE74a9088aD4d6dBf3C8cABcC0B91072d2a8c8afa": "idle",
         "0xee46B9Dc4c860149B1d140840284e5374854e746": "agree"
       },
       "record": {
         "amount": "250000000",
-        "assessed": 1795372143,
+        "assessed": 1795413295,
         "chain": 42161,
-        "deployment": "0xcf045d20fd5373276a8d8fb14298661070b453e9",
+        "deployment": "0x0c023865876bad39f32aa227c00e3f46cdd92bf4",
         "evidence": {
+          "assessed": 1795413295,
           "asset": "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
+          "chain": 42161,
           "identity": "MATCH",
           "issuer_quote": "Arbitrum 0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+          "network": "Arbitrum One",
+          "operation": "deposit",
           "policy": "ALLOW",
-          "policy_quote": "Both USDC.e and USDC native can be deposited on the Optimism , Polygon and Arbitrum One networks.",
-          "policy_revision": "4e66dd82da0e9291fe97d274b57925974f596463fd0ad6ecbc842d2c9c97e45f",
+          "policy_date": "2026-10-19",
+          "policy_date_basis": "documented_current_on",
+          "policy_effective_from": "",
+          "policy_in_force_by": "2026-10-19",
+          "policy_quote": "Kraken now supports deposits and withdrawals of Optimism, Polygon and Arbitrum’s native USD Coin (USDC).",
+          "policy_revision": "6559a85f4d3d3f063d35703cd999a4a971dd8301444b5c8005bd044dccaea2ef",
+          "policy_source": "https://support.kraken.com/articles/native-usd-coin",
           "sources": [
             "https://developers.circle.com/stablecoins/usdc-contract-addresses",
-            "https://support.kraken.com/au/articles/native-usd-coin"
+            "https://support.kraken.com/articles/native-usd-coin",
+            "https://support.kraken.com/ca/articles/usdce-support-ending-arbitrum-optimism-polygon"
+          ],
+          "variant": "native USDC",
+          "versions": [
+            {
+              "sha256": "139d559ec540e287c937de0cab62b0ce5cee6bddaaf662da85a2816623801d06",
+              "status": "READ",
+              "url": "https://developers.circle.com/stablecoins/usdc-contract-addresses"
+            },
+            {
+              "sha256": "2eeba0ba5c4b89e4cf69ebe08e8ff575dbff5e04aa8618ccd1048c3e7c3c8bb1",
+              "status": "READ",
+              "updated": "2026-10-19",
+              "url": "https://support.kraken.com/articles/native-usd-coin"
+            },
+            {
+              "sha256": "fea6ed16ae039b0e31a27f738723f3ac60ad93006b6cf50e54a511d962bde76b",
+              "status": "READ",
+              "updated": "2026-11-05",
+              "url": "https://support.kraken.com/ca/articles/usdce-support-ending-arbitrum-optimism-polygon"
+            }
           ]
         },
-        "expires": 1795373943,
+        "expires": 1795415095,
         "key": "arbitrum-native-check",
-        "owner": "0x3862140bae556d621d73d601cbaee2437c4b4f1a",
-        "permit": "cb0543848648d9098da84f08cacfe2c4c1fb47bb76961de0519a85c071526ed8",
+        "owner": "0x9bc879398498c1d9a42b3b8be5edba3bc7b0d6fb",
+        "permit": "448d71c302174ecb500d40bf32c959029a0a0274c1f9da02b54494efd4aaef02",
         "platform": "Kraken",
-        "protocol": "routelock/1",
+        "protocol": "routelock/2",
         "recipient": "0x0000000000000000000000000000000000000123",
-        "reviewer": "0xd9a2a68e2d83c817a102172e9626d4aa1addfd11",
+        "reviewer": "0x0a6c1aa4c6e10e7cd3ad32c6882852067bc092ef",
+        "revision": 1,
         "status": "READY",
         "token": "0xaf88d065e77c8cc2239327c5edb3a432268e5831"
-      },
-      "balanceAfter": "0"
+      }
     },
     "consume": {
       "phase": "consume",
-      "balanceBefore": "0",
-      "signer": "0xd9a2a68E2D83C817a102172E9626D4AA1aDdfD11",
-      "deployment": "0xcf045d20fd5373276a8d8fb14298661070b453e9",
-      "hash": "0x65d83836c5e2c43bff2bd1370d5c1fafd47192a54b6b2de8f803719bb0ac9244",
+      "signer": "0x0a6c1aa4c6e10e7cd3ad32c6882852067bc092ef",
+      "deployment": "0x0c023865876bad39f32aa227c00e3f46cdd92bf4",
+      "hash": "0x68cf75d7cf40bc246a8f5d4119d95193badc38294c8f2888c60d295909c7b7f1",
       "status": "FINALIZED",
       "execution": "SUCCESS",
+      "balanceBefore": "0",
+      "balanceAfter": "250000000",
       "consensus": {
-        "0x21e4F7ba6Ec0fbf70C019fbc0F9A797c3ed1F969": "idle",
-        "0x5744305308D62592B7De585e1999c4Ea51E03C29": "idle",
-        "0x62718FbDf0509A398aA525C152D60c1F7A9d33D3": "agree",
-        "0x813890bC5bEDEB4F5437570962379F04738F18Cb": "agree",
-        "0xBE58b43DF1d991e054F743Cc5571dD7029F3B888": "agree"
+        "0x22Eda431B7fBC1216baE3b077a78c973a8719c58": "agree",
+        "0x23A15A452F19D1B616276fedC5B8B51d69082959": "idle",
+        "0x534af64FFB6796Bc69aBf4C26c50788F1fFAfe56": "agree",
+        "0xBE58b43DF1d991e054F743Cc5571dD7029F3B888": "agree",
+        "0xee46B9Dc4c860149B1d140840284e5374854e746": "idle"
       },
       "record": {
         "amount": "250000000",
-        "assessed": 1795372143,
+        "assessed": 1795413295,
         "chain": 42161,
-        "consumed": 1795372253,
-        "deployment": "0xcf045d20fd5373276a8d8fb14298661070b453e9",
+        "consumed": 1795413366,
+        "deployment": "0x0c023865876bad39f32aa227c00e3f46cdd92bf4",
         "evidence": {
+          "assessed": 1795413295,
           "asset": "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
+          "chain": 42161,
           "identity": "MATCH",
           "issuer_quote": "Arbitrum 0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+          "network": "Arbitrum One",
+          "operation": "deposit",
           "policy": "ALLOW",
-          "policy_quote": "Both USDC.e and USDC native can be deposited on the Optimism , Polygon and Arbitrum One networks.",
-          "policy_revision": "4e66dd82da0e9291fe97d274b57925974f596463fd0ad6ecbc842d2c9c97e45f",
+          "policy_date": "2026-10-19",
+          "policy_date_basis": "documented_current_on",
+          "policy_effective_from": "",
+          "policy_in_force_by": "2026-10-19",
+          "policy_quote": "Kraken now supports deposits and withdrawals of Optimism, Polygon and Arbitrum’s native USD Coin (USDC).",
+          "policy_revision": "6559a85f4d3d3f063d35703cd999a4a971dd8301444b5c8005bd044dccaea2ef",
+          "policy_source": "https://support.kraken.com/articles/native-usd-coin",
           "sources": [
             "https://developers.circle.com/stablecoins/usdc-contract-addresses",
-            "https://support.kraken.com/au/articles/native-usd-coin"
+            "https://support.kraken.com/articles/native-usd-coin",
+            "https://support.kraken.com/ca/articles/usdce-support-ending-arbitrum-optimism-polygon"
+          ],
+          "variant": "native USDC",
+          "versions": [
+            {
+              "sha256": "139d559ec540e287c937de0cab62b0ce5cee6bddaaf662da85a2816623801d06",
+              "status": "READ",
+              "url": "https://developers.circle.com/stablecoins/usdc-contract-addresses"
+            },
+            {
+              "sha256": "2eeba0ba5c4b89e4cf69ebe08e8ff575dbff5e04aa8618ccd1048c3e7c3c8bb1",
+              "status": "READ",
+              "updated": "2026-10-19",
+              "url": "https://support.kraken.com/articles/native-usd-coin"
+            },
+            {
+              "sha256": "fea6ed16ae039b0e31a27f738723f3ac60ad93006b6cf50e54a511d962bde76b",
+              "status": "READ",
+              "updated": "2026-11-05",
+              "url": "https://support.kraken.com/ca/articles/usdce-support-ending-arbitrum-optimism-polygon"
+            }
           ]
         },
-        "expires": 1795373943,
+        "expires": 1795415095,
         "key": "arbitrum-native-check",
-        "owner": "0x3862140bae556d621d73d601cbaee2437c4b4f1a",
-        "permit": "cb0543848648d9098da84f08cacfe2c4c1fb47bb76961de0519a85c071526ed8",
+        "owner": "0x9bc879398498c1d9a42b3b8be5edba3bc7b0d6fb",
+        "permit": "448d71c302174ecb500d40bf32c959029a0a0274c1f9da02b54494efd4aaef02",
         "platform": "Kraken",
-        "protocol": "routelock/1",
+        "protocol": "routelock/2",
         "recipient": "0x0000000000000000000000000000000000000123",
-        "reviewer": "0xd9a2a68e2d83c817a102172e9626d4aa1addfd11",
+        "reviewer": "0x0a6c1aa4c6e10e7cd3ad32c6882852067bc092ef",
+        "revision": 1,
         "status": "CONSUMED",
         "token": "0xaf88d065e77c8cc2239327c5edb3a432268e5831"
-      },
-      "balanceAfter": "250000000"
+      }
     },
     "bridged": {
       "phase": "bridged",
-      "balanceBefore": "0",
-      "signer": "0x3862140BaE556D621D73D601CBAEE2437c4B4f1a",
-      "deployment": "0xcf045d20fd5373276a8d8fb14298661070b453e9",
-      "hash": "0xde2ebeec827ab1b2ae9fa951d4b3a569aa882d0eedefcdcf014e061d6e756d5a",
+      "signer": "0x9bc879398498c1d9a42b3b8be5edba3bc7b0d6fb",
+      "deployment": "0x0c023865876bad39f32aa227c00e3f46cdd92bf4",
+      "hash": "0x84d15e9df62a9561fa1eaf2773919684045b803a655aaf35c3ba3cb368d2a9e5",
       "status": "FINALIZED",
       "execution": "SUCCESS",
+      "balanceBefore": "0",
+      "balanceAfter": "0",
       "consensus": {
-        "0x19a02f95418A6c76091CDA37C4fc542CA82805c9": "idle",
-        "0x21e4F7ba6Ec0fbf70C019fbc0F9A797c3ed1F969": "agree",
-        "0x240d2d7c8DF220110c26cfFFC532479319Cca0dC": "idle",
-        "0x813890bC5bEDEB4F5437570962379F04738F18Cb": "agree",
-        "0x88E148Da14d45c5a5DD2DB25E776eBCBCe0Df539": "agree"
+        "0x534af64FFB6796Bc69aBf4C26c50788F1fFAfe56": "agree",
+        "0x6DC61b906F74F44612c5545b0b79486133B3556d": "agree",
+        "0x813890bC5bEDEB4F5437570962379F04738F18Cb": "idle",
+        "0xe358f855C96d8E7243836cf986eb037175B9467e": "agree",
+        "0xee46B9Dc4c860149B1d140840284e5374854e746": "idle"
       },
       "record": {
         "amount": "125000000",
-        "assessed": 1795372181,
+        "assessed": 1795413421,
         "chain": 43114,
-        "deployment": "0xcf045d20fd5373276a8d8fb14298661070b453e9",
+        "deployment": "0x0c023865876bad39f32aa227c00e3f46cdd92bf4",
         "evidence": {
+          "assessed": 1795413421,
           "asset": "0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664",
+          "chain": 43114,
           "identity": "MATCH",
           "issuer_quote": "USDC.e on Avalanche is a \"bridged form of Ethereum USDC",
+          "network": "Avalanche C-Chain",
+          "operation": "deposit",
           "policy": "BLOCK",
+          "policy_date": "2026-10-19",
+          "policy_date_basis": "documented_current_on",
+          "policy_effective_from": "",
+          "policy_in_force_by": "2026-10-19",
           "policy_quote": "USDC.e is currently not supported on the Avalanche C-Chain.",
-          "policy_revision": "4e66dd82da0e9291fe97d274b57925974f596463fd0ad6ecbc842d2c9c97e45f",
+          "policy_revision": "c6a92b97b7dc2fab9330e8ef1a9984e9fb454ff4b881c4f6a45d2327880a7559",
+          "policy_source": "https://support.kraken.com/articles/native-usd-coin",
           "sources": [
             "https://help.circle.com/support/en/usdc-on-avalanche-vs-usdc-e?id=kb_article_view&sysparm_article=KB0010587",
-            "https://support.kraken.com/au/articles/native-usd-coin"
+            "https://support.kraken.com/articles/native-usd-coin",
+            "https://support.kraken.com/ca/articles/usdce-support-ending-arbitrum-optimism-polygon"
+          ],
+          "variant": "USDC.e",
+          "versions": [
+            {
+              "sha256": "33092b3b7f4962016648e3a9a7ebf837b5f232135fd0b6e03d287c208a737b26",
+              "status": "READ",
+              "url": "https://help.circle.com/support/en/usdc-on-avalanche-vs-usdc-e?id=kb_article_view&sysparm_article=KB0010587"
+            },
+            {
+              "sha256": "2eeba0ba5c4b89e4cf69ebe08e8ff575dbff5e04aa8618ccd1048c3e7c3c8bb1",
+              "status": "READ",
+              "updated": "2026-10-19",
+              "url": "https://support.kraken.com/articles/native-usd-coin"
+            },
+            {
+              "sha256": "fea6ed16ae039b0e31a27f738723f3ac60ad93006b6cf50e54a511d962bde76b",
+              "status": "READ",
+              "updated": "2026-11-05",
+              "url": "https://support.kraken.com/ca/articles/usdce-support-ending-arbitrum-optimism-polygon"
+            }
           ]
         },
-        "expires": 1795373981,
+        "expires": 1795415221,
         "key": "avax-bridged-check",
-        "owner": "0x3862140bae556d621d73d601cbaee2437c4b4f1a",
+        "owner": "0x9bc879398498c1d9a42b3b8be5edba3bc7b0d6fb",
         "permit": "",
         "platform": "Kraken",
-        "protocol": "routelock/1",
+        "protocol": "routelock/2",
         "recipient": "0x0000000000000000000000000000000000000123",
-        "reviewer": "0xd9a2a68e2d83c817a102172e9626d4aa1addfd11",
+        "reviewer": "0x0a6c1aa4c6e10e7cd3ad32c6882852067bc092ef",
+        "revision": 1,
         "status": "BLOCKED",
         "token": "0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664"
-      },
-      "balanceAfter": "0"
+      }
     }
   },
-  "bridgedReceiptEntries": [
-    {
-      "mode": "leader",
-      "execution_result": "SUCCESS",
-      "vote": null
-    },
-    {
-      "mode": "validator",
-      "execution_result": "ERROR",
-      "vote": "idle"
-    }
-  ]
+  "policyReview": {
+    "checkedOn": "2026-11-23",
+    "routeOperation": "deposit",
+    "sources": [
+      {
+        "url": "https://support.kraken.com/articles/native-usd-coin",
+        "lastUpdated": "2026-10-19",
+        "published": null,
+        "policyArticleSha256": "2eeba0ba5c4b89e4cf69ebe08e8ff575dbff5e04aa8618ccd1048c3e7c3c8bb1",
+        "bodyEvidence": [
+          "supports deposits and withdrawals",
+          "USDC.e is currently not supported on the Avalanche C-Chain."
+        ],
+        "scope": [
+          {
+            "networks": [
+              "Arbitrum One",
+              "Optimism",
+              "Polygon PoS"
+            ],
+            "asset": "native USDC",
+            "operations": [
+              "deposit",
+              "withdrawal"
+            ],
+            "result": "supported",
+            "inForceBy": "2026-10-19",
+            "effectiveFrom": null
+          },
+          {
+            "networks": [
+              "Arbitrum One",
+              "Optimism",
+              "Polygon PoS"
+            ],
+            "asset": "USDC.e",
+            "operations": [
+              "deposit",
+              "withdrawal"
+            ],
+            "result": "older support until further notice",
+            "inForceBy": "2026-10-19",
+            "effectiveFrom": null
+          },
+          {
+            "networks": [
+              "Avalanche C-Chain"
+            ],
+            "asset": "USDC.e",
+            "operations": [
+              "deposit",
+              "withdrawal"
+            ],
+            "result": "unsupported",
+            "inForceBy": "2026-10-19",
+            "effectiveFrom": null
+          }
+        ]
+      },
+      {
+        "url": "https://support.kraken.com/ca/articles/usdce-support-ending-arbitrum-optimism-polygon",
+        "lastUpdated": "2026-11-05",
+        "publishedArticleStructuredData": "2026-11-05T00:00:00.000Z",
+        "cmsFirstPublishedAt": "2026-10-28T05:47:28.746Z",
+        "cmsLastPublishedAt": "2026-11-05T14:40:24.992Z",
+        "publicationNote": "The visible article labels November 5 as last updated. Its Article JSON-LD dates the public article November 5. The same page embeds an earlier CMS firstPublishedAt field, which does not establish the first date this exact text was public.",
+        "policyArticleSha256": "fea6ed16ae039b0e31a27f738723f3ac60ad93006b6cf50e54a511d962bde76b",
+        "bodyEvidence": [
+          "USDC.e deposits will be disabled",
+          "USDC.e withdrawals will be disabled",
+          "Native USDC deposits and withdrawals are not affected."
+        ],
+        "networks": [
+          "Arbitrum One",
+          "Optimism",
+          "Polygon PoS"
+        ],
+        "bridgedAssets": {
+          "42161": "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8",
+          "10": "0x7f5c764cbc14f9669b88837ca1490cca17c31607",
+          "137": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174"
+        },
+        "scope": [
+          {
+            "asset": "USDC.e",
+            "operation": "deposit",
+            "result": "disabled",
+            "effectiveFrom": "2026-11-16"
+          },
+          {
+            "asset": "USDC.e",
+            "operation": "withdrawal",
+            "result": "disabled",
+            "effectiveFrom": "2026-12-14"
+          },
+          {
+            "asset": "native USDC",
+            "operation": "deposit",
+            "result": "support continues and native becomes the default",
+            "defaultFrom": "2026-11-16"
+          },
+          {
+            "asset": "native USDC",
+            "operation": "withdrawal",
+            "result": "support continues",
+            "effectiveFrom": null
+          }
+        ],
+        "cutoffPrecision": "Calendar dates. Time of day and timezone are unspecified."
+      },
+      {
+        "url": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+        "lastUpdated": null,
+        "dateModifiedStructuredData": "2026-11-11T23:39:20.601Z",
+        "effectiveFrom": null,
+        "scope": "Mainnet asset identity registry",
+        "bodyEvidence": [
+          "Arbitrum | 0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+          "Avalanche C-Chain | 0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E"
+        ]
+      },
+      {
+        "url": "https://help.circle.com/support/en/usdc-on-avalanche-vs-usdc-e?id=kb_article_view&sysparm_article=KB0010587",
+        "lastUpdated": null,
+        "effectiveFrom": null,
+        "scope": "Avalanche C-Chain bridged identity and Circle Mint deposit eligibility",
+        "bodyEvidence": [
+          "bridged form of Ethereum USDC",
+          "You cannot send USDC.e to a Circle deposit address."
+        ],
+        "officialBridgeAddressLink": "https://snowtrace.io/token/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
+        "renderNote": "The rendered public article exposes the body. The initial non-rendered HTTP response is an application shell."
+      },
+      {
+        "url": "https://support.kraken.com/in/articles/stablecoins-supported-on-kraken",
+        "lastUpdated": "2026-11-05",
+        "effectiveFrom": null,
+        "scope": "Supplementary deposit and withdrawal network catalog. The generic Avalanche USDC row does not identify USDC.e. The footnote naming older bridged support on the other three networks is superseded by the operation-specific notice as each cutoff takes effect.",
+        "bodyEvidence": [
+          "USD Coin (USDC)"
+        ]
+      }
+    ],
+    "expectedRoutes": [
+      {
+        "chain": 42161,
+        "token": "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
+        "operation": "deposit",
+        "expected": "READY"
+      },
+      {
+        "chain": 43114,
+        "token": "0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664",
+        "operation": "deposit",
+        "expected": "BLOCKED"
+      }
+    ]
+  },
+  "historicalEvidence": {
+    "protocol": "routelock/1",
+    "address": "0xCF045D20fD5373276A8D8Fb14298661070b453E9",
+    "file": "routes-routelock-1.json",
+    "fileSha256": "5e2cd830c11014e9fa8411f51278f19378be378a8c5c658009d36f19a008f51d"
+  },
+  "finality": "FINALIZED",
+  "execution": "SUCCESS",
+  "previousPolicyValidation": {
+    "address": "0x2F20900c9f0818cDd50c19B9ef3fb1DE28f326a6",
+    "deploymentTx": "0xd0505c5e86f11bf7d52e026bfc9389b3943c92ec9d698a1029cb4cfa34406e5d",
+    "file": "routes-routelock-2-review.json",
+    "fileSha256": "8f16789ad7eb0900d4814ea0aac29350c47a9b5e30a40e470201275c10c084a7"
+  }
 }
